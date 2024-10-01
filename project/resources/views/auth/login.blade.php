@@ -1,10 +1,14 @@
 <x-guest-layout>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+
+    
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+        
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />
@@ -44,4 +48,6 @@
             </x-primary-button>
         </div>
     </form>
+
 </x-guest-layout>
+
