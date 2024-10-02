@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #146bdc;
+}
+
+.header {
+    background-color: #343a40; /* Header background color */
+    color: white;
+    padding: 20px; /* Adjust padding for more space */
+    text-align: center;
+    border-bottom-left-radius: 30%; /* Create semi-circle */
+    border-bottom-right-radius: 30%; /* Create semi-circle */
+    position: relative; /* Positioning context for the logo */
+    font-size: 20px;
+}
+
+.logo-container {
+    position: relative;
+    display: inline-block;/* Align items horizontally */
+}
+
+.logo{
+    margin-left: 600px;
+    margin-top: 60px;
+}
+main {
+    padding: 20px;
+}
+
+
+.header2 {
+    margin-left: 300px;
+    font-size: 70px;
+    margin-top: -20px;
+}
+
+.login-button {
+    display: inline-block; /* Make it behave like a button */
+    padding: 10px 25px; /* Add padding */
+    margin-top: -100px; /* Space above the button */
+    background-color: white; /* Bootstrap primary color */
+    color: rgb(8, 0, 0); /* Text color */
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+    margin-left: 1350px;
+}
+
+.login-button:hover {
+    background-color: #6a96c6; /* Darker blue on hover */
+}
+
+.login1{
+    margin-top: 20px;
+}
