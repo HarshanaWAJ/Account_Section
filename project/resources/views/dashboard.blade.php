@@ -1,17 +1,38 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- If you still need Bootstrap -->
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                </div>
-            </div>
-        </div>
+        <!-- Navigation Bar -->
+        <nav>
+            <ul class="nav">
+                <li><a href="{{ route('add.officers') }}">Add Officers</a></li>
+                <li><a href="{{ route('manage.officers') }}">Manage Officers</a></li>
+            </ul>
+        </nav>
+
+        <!-- Logout Form -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+
+        <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn btn-danger logout-button">
+            Logout
+        </button>
+
+        <!-- Add your dashboard content here -->
     </div>
-</x-app-layout>
+    
+    <script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>
+
+
