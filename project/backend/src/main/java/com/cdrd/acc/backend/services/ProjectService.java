@@ -38,17 +38,30 @@ public class ProjectService {
     public ProjectDTO getProjectById(int id) {
         ProjectDTO projectDTO = new ProjectDTO();
         Optional<Project> projectOptional = projectRepo.findById(id);
+
         if (projectOptional.isPresent()) {
             Project project = projectOptional.get();
-            projectDTO.setProject(project);
+
+            // Set the project details directly to the DTO
+            projectDTO.setId(project.getId());
+            projectDTO.setProjectNo(project.getProjectNo());
+            projectDTO.setProjectName(project.getProjectName());
+            projectDTO.setProjectDescription(project.getProjectDescription());
+            projectDTO.setStartingDate(project.getStartingDate());
+            projectDTO.setEndingDate(project.getEndingDate());
+            projectDTO.setWing(project.getWing());
+
             projectDTO.setStatusCode(200);
             projectDTO.setMessage("Project retrieved successfully");
         } else {
             projectDTO.setStatusCode(404);
             projectDTO.setError("Project not found");
         }
+
         return projectDTO;
     }
+
+
 
     public ProjectDTO updateProject(int id, ProjectDTO projectDTO) {
         ProjectDTO responseDTO = new ProjectDTO();
