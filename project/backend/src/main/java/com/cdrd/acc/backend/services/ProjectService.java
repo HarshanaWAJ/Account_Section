@@ -1,2 +1,89 @@
-package com.cdrd.acc.backend.services;public class ProjectService {
+package com.cdrd.acc.backend.services;
+
+import com.cdrd.acc.backend.dto.ProjectDTO;
+import com.cdrd.acc.backend.entity.Project;
+import com.cdrd.acc.backend.repositories.ProjectRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProjectService {
+
+    @Autowired
+    private ProjectRepo projectRepo;
+
+    public ProjectDTO createProject(ProjectDTO projectDTO) {
+        Project project = new Project();
+        project.setProjectNo(projectDTO.getProjectNo());
+        project.setProjectName(projectDTO.getProjectName());
+        project.setProjectDescription(projectDTO.getProjectDescription());
+        project.setStartingDate(projectDTO.getStartingDate());
+        project.setEndingDate(projectDTO.getEndingDate());
+        project.setWing(projectDTO.getWing());
+
+        Project savedProject = projectRepo.save(project);
+        projectDTO.setProject(savedProject);
+        projectDTO.setStatusCode(200);
+        projectDTO.setMessage("Project created successfully");
+        return projectDTO;
+    }
+
+    public List<Project> getAllProjects() {
+        return projectRepo.findAll();
+    }
+
+    public ProjectDTO getProjectById(int id) {
+        ProjectDTO projectDTO = new ProjectDTO();
+        Optional<Project> projectOptional = projectRepo.findById(id);
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            projectDTO.setProject(project);
+            projectDTO.setStatusCode(200);
+            projectDTO.setMessage("Project retrieved successfully");
+        } else {
+            projectDTO.setStatusCode(404);
+            projectDTO.setError("Project not found");
+        }
+        return projectDTO;
+    }
+
+    public ProjectDTO updateProject(int id, ProjectDTO projectDTO) {
+        ProjectDTO responseDTO = new ProjectDTO();
+        Optional<Project> projectOptional = projectRepo.findById(id);
+        if (projectOptional.isPresent()) {
+            Project project = projectOptional.get();
+            project.setProjectNo(projectDTO.getProjectNo());
+            project.setProjectName(projectDTO.getProjectName());
+            project.setProjectDescription(projectDTO.getProjectDescription());
+            project.setStartingDate(projectDTO.getStartingDate());
+            project.setEndingDate(projectDTO.getEndingDate());
+            project.setWing(projectDTO.getWing());
+
+            Project updatedProject = projectRepo.save(project);
+            responseDTO.setProject(updatedProject);
+            responseDTO.setStatusCode(200);
+            responseDTO.setMessage("Project updated successfully");
+        } else {
+            responseDTO.setStatusCode(404);
+            responseDTO.setError("Project not found");
+        }
+        return responseDTO;
+    }
+
+    public ProjectDTO deleteProject(int id) {
+        ProjectDTO responseDTO = new ProjectDTO();
+        Optional<Project> projectOptional = projectRepo.findById(id);
+        if (projectOptional.isPresent()) {
+            projectRepo.deleteById(id);
+            responseDTO.setStatusCode(200);
+            responseDTO.setMessage("Project deleted successfully");
+        } else {
+            responseDTO.setStatusCode(404);
+            responseDTO.setError("Project not found");
+        }
+        return responseDTO;
+    }
 }
