@@ -1,6 +1,6 @@
 // src/AddProject.js
 import React, { useState } from 'react';
-//import './addproject.css'; // Import the CSS file
+import './css/addproject.css'; // Import the CSS file
 
 const AddProject = () => {
   const [projectNumber, setProjectNumber] = useState('');

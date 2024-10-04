@@ -1,0 +1,50 @@
+/* src/addproject.css */
+.add-project {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+    margin-top: 50px;
+    height: 600px;
+  }
+  
+  .add-project .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .add-project label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .add-project input,
+  .add-project select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .add-project button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: blue; /* Bootstrap primary color */
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .add-project button:hover {
+    background-color: #45a049;
+  }
+  

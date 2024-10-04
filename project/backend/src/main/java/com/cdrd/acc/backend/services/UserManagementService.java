@@ -60,6 +60,25 @@ public class UserManagementService {
     public ReqRes login(ReqRes loginRequest) {
         ReqRes resp = new ReqRes();
         try {
+            // Check for hardcoded admin credentials
+            if ("admin@cdrd.lk".equals(loginRequest.getEmail()) && "admin1234".equals(loginRequest.getPassword())) {
+                var adminUser = new OurUsers(); // Create a new User object for admin
+                adminUser.setEmail("admin@cdrd.lk");
+                adminUser.setRole("ADMIN"); // Example role assignment
+
+                var jwt = jwtUtils.generateToken(adminUser);
+                var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), adminUser);
+
+                resp.setStatusCode(200);
+                resp.setToken(jwt);
+                resp.setRefreshToken(refreshToken);
+                resp.setExpirationTime("24Hrs");
+                resp.setMessage("Admin logged in successfully");
+                resp.setRole(adminUser.getRole()); // Set the role in the response
+                return resp;
+            }
+
+            // Regular authentication flow
             authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
                             loginRequest.getPassword()));
@@ -73,6 +92,7 @@ public class UserManagementService {
             resp.setRefreshToken(refreshToken);
             resp.setExpirationTime("24Hrs");
             resp.setMessage("Successfully Logged in");
+            resp.setRole(user.getRole()); // Assuming user has a getRole method
 
         } catch (Exception e) {
             resp.setStatusCode(500);

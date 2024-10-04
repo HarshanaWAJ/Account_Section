@@ -1,7 +1,9 @@
 /* src/manageOfficers.css */
+
+
 .manage-officers {
     padding: 20px;
-    background-color: #146bdc;
+    background-color: linear-gradient(to right, #4e54c8, #8f94fb);
     border-radius: 8px;
     color: black;
   }
@@ -11,6 +13,7 @@
     border-collapse: collapse;
     margin-top: 20px;
     margin-left: 70px;
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
     
   }
   

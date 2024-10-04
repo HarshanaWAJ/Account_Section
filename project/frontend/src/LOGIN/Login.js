@@ -1,21 +1,29 @@
-// src/Login.js
 import React, { useState } from 'react';
-import './css/login.css';
+import './css/login.css'; // Ensure this path is correct
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [errors, setErrors] = useState([]);
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('/api/login', {
+    const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfTokenMeta ? csrfTokenMeta.content : ''; // Safely get the CSRF token
+
+    const response = await fetch('http://localhost:8088/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+        'X-CSRF-TOKEN': csrfToken, 
       },
       body: JSON.stringify({ email, password }),
     });
@@ -24,19 +32,28 @@ const Login = () => {
       const data = await response.json();
       setErrors(data.errors || ['Invalid credentials']);
     } else {
-      console.log('Login successful');
+      const data = await response.json();
+      if (data.statusCode === 500) {
+        alert("Invalid credentials");
+      } else {
+        if (data.role === "ADMIN") {
+          navigate('/admin-dashboard'); // Navigate to the admin page
+        } else {
+          alert("Not authorized for this action");
+        }
+      }
     }
   };
 
   return (
-    <div className="page1">
+    <div className="log-page1">
       <header>
-        <img src="/crd logo.png" alt="CRD Logo" className="logo1" />
+        <img src="/crd logo.png" alt="CRD Logo" className="log-logo1" />
       </header>
 
       <main>
-        <section className="login-section">
-          <h2 className="header2">Login</h2>
+        <section className="log-login-section">
+          <h2 className="log-header2">Login</h2>
           {errors.length > 0 && (
             <div className="error">
               <ul>
@@ -48,7 +65,7 @@ const Login = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className="log-form-group">
               <label htmlFor="email">Email:</label>
               <input
                 type="email"
@@ -59,9 +76,9 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className="log-form-group">
               <label htmlFor="password">Password:</label>
-              <div className="password-container">
+              <div className="password-input-container">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
@@ -72,15 +89,19 @@ const Login = () => {
                 />
                 <button
                   type="button"
-                  className="toggle-password"
-                  onClick={() => setShowPassword(!showPassword)}
+                  className="password-toggle-btn"
+                  onClick={togglePasswordVisibility}
+                  aria-label="Toggle password visibility"
                 >
-                  <i className={showPassword ? "fas fa-eye-slash" : "fas fa-eye"}></i>
+                  <i className={`fas ${showPassword ? 'fa-eye' : 'fa-eye-slash'}`}></i>
                 </button>
               </div>
             </div>
-            <button type="submit" className="login-button">Login</button>
+            <div className='login-btn'>
+              <button type="submit" className="log-login-button">Login</button>
+            </div>
           </form>
+
         </section>
       </main>
     </div>

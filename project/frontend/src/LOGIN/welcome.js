@@ -9,8 +9,8 @@ const Welcome = () => {
 
   return (
     <div>
-      <header className="header">
-        <div className="logo-container">
+      <header className="welcome-header">
+        <div className="welcome-logo-container">
           <h1>CENTER FOR DEFENCE RESEARCH AND DEVELOPMENT</h1>
         </div>
         <div className="login1">
@@ -19,9 +19,9 @@ const Welcome = () => {
       </header>
       <main>
         <section>
-        <a href="/login" className="login-button1">Login</a>
-        <img src="/crd logo.png" alt="CRD Logo" className="logo" /> {/* Add the image here */}
-          <h2 className="header2">Quotation Tracking System</h2>
+        <a href="/login" className="welcome-login-button1">Login</a>
+        <img src="/crd logo.png" alt="CRD Logo" className="welcome-logo" /> {/* Add the image here */}
+          <h2 className="welcome-header2">Quotation Tracking System</h2>
         </section>
       </main>
     </div>

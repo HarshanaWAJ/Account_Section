@@ -50,13 +50,14 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
   
-  button {
+  .add-officer button {
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: blue; /* Bootstrap primary color */
     color: white;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
   }

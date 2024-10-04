@@ -1,90 +1,46 @@
-// src/AddProject.js
-import React, { useState } from 'react';
-//import './addproject.css'; // Import the CSS file
+import React, { useState} from 'react';
+import './css/manageOfficers.css';
+//import { getOfficersData } from './AddOfficer';
 
-const AddProject = () => {
-  const [projectNumber, setProjectNumber] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [wing, setWing] = useState('');
-  const [estimatedValue, setEstimatedValue] = useState('');
-  const [startingDate, setStartingDate] = useState('');
-  const [endingDate, setEndingDate] = useState('');
+const ManageOfficers = () => {
+  const [officers] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Project added:', { projectNumber, projectName, wing, estimatedValue, startingDate, endingDate });
-
-    // Reset the form
-    setProjectNumber('');
-    setProjectName('');
-    setWing('');
-    setEstimatedValue('');
-    setStartingDate('');
-    setEndingDate('');
-  };
+ // useEffect(() => {
+    // Automatically fill data from AddOfficers.js
+   // const officersData = getOfficersData();
+    //setOfficers(officersData);
+  //}, []);
 
   return (
-    <div className="add-project">
-      <h2 className="h2">Add Project</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Project Number:</label>
-          <input
-            type="text"
-            value={projectNumber}
-            onChange={(e) => setProjectNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Project Name:</label>
-          <input
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Wing:</label>
-          <input
-            type="text"
-            value={wing}
-            onChange={(e) => setWing(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Estimated Value:</label>
-          <input
-            type="number"
-            value={estimatedValue}
-            onChange={(e) => setEstimatedValue(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Starting Date:</label>
-          <input
-            type="date"
-            value={startingDate}
-            onChange={(e) => setStartingDate(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Ending Date:</label>
-          <input
-            type="date"
-            value={endingDate}
-            onChange={(e) => setEndingDate(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Add Project</button>
-      </form>
+    <div className="manage-officers">
+      <h2>Manage Officers</h2>
+      <table className="officer-table">
+        <thead> 
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {officers.map((officer, index) => (
+            <tr key={index}>
+              <td>{officer.id}</td>
+              <td>{officer.name}</td>
+              <td>{officer.role}</td>
+              <td>{officer.email}</td>
+              <td>
+                <button>Edit</button>
+                <button>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default AddProject;
+export default ManageOfficers;

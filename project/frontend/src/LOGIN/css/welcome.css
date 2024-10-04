@@ -5,7 +5,7 @@ body {
     background-color: #146bdc;
 }
 
-.header {
+.welcome-header {
     background-color: #343a40; /* Header background color */
     color: white;
     padding: 20px; /* Adjust padding for more space */
@@ -16,12 +16,12 @@ body {
     font-size: 20px;
 }
 
-.logo-container {
+.welcome-logo-container {
     position: relative;
     display: inline-block;/* Align items horizontally */
 }
 
-.logo{
+.welcome-logo{
     margin-left: 600px;
     margin-top: 10px;
 }
@@ -30,13 +30,15 @@ main {
 }
 
 
-.header2 {
-    margin-left: -50px;
+.welcome-header2 {
+    margin-left: 50px;
     font-size: 70px;
     margin-top: -20px;
+    text-align: center;
+    color: black;
 }
 
-.login-button1 {
+.welcome-login-button1 {
     display: inline-block; /* Make it behave like a button */
     padding: 10px 25px; /* Add padding */
     margin-top: -100px; /* Space above the button */
