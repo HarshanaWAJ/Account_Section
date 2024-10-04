@@ -3,12 +3,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Welcome from './LOGIN/welcome'; 
 import Login from './LOGIN/Login';
-//import Register from './LOGIN/Register';
 import AdminDashboard from './ADMIN/AdminDashboard';
 import AddOfficer from './ADMIN/AddOfficer';
 import ManageOfficers from './ADMIN/ManageOfficers';
-import AddProjects from './ADMIN/AddProjects'; // Import the new AddProject component
+import AddProjects from './ADMIN/AddProjects'; 
 import ManageProjects from './ADMIN/ManageProjects';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const App = () => {
   return (

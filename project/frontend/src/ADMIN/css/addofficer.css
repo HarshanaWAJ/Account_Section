@@ -53,8 +53,7 @@
   .add-officer button {
     padding: 10px 15px;
     border: none;
-    border-radius: 5px;
-    background-color: blue; /* Bootstrap primary color */
+    border-radius: 5px; 
     color: white;
     font-weight: bold;
     font-size: 20px;
@@ -63,7 +62,7 @@
   }
   
   button:hover {
-    background-color: #0056b3; /* Darker shade of primary */
+    background-color: #0056b3; 
   }
   
   @media (max-width: 480px) {
@@ -88,3 +87,18 @@ select {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue shadow on focus */
   }
   
+  .password-toggle-btn {  
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -70px;
+  }
+  
+  .password-toggle-btn i {
+    font-size: 1.2em;
+    color: #333;
+  }
+  
+  .password-toggle-btn:hover {
+    background-color: transparent;
+  }
