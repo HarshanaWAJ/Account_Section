@@ -76,6 +76,7 @@ const ManageOfficers = () => {
     <div className="manage-officers container mt-4">
       <h2 className="mb-4">Manage Officers</h2>
       {error && <div className="alert alert-danger">{error}</div>} {/* Display error message */}
+      {success && <div className="alert alert-success">{success}</div>} {/* Display success message */}
       <table className="table table-striped table-hover table-bordered">
         <thead className="thead-dark">
           <tr>

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/login.css'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import Swal from 'sweetalert2';
 
 const Login = () => {
+  useEffect(() => {
+    document.title = "Login"; // Set the document title
+  }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate(); // Initialize useNavigate
+
+  //Function for Invalid Credentials
+  function showInvalidCredentialsAlert() {
+    Swal.fire({
+        icon: 'error',
+        title: 'Invalid Credentials',
+        text: 'Please check your username and password.',
+    });
+  }
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -34,7 +47,7 @@ const Login = () => {
     } else {
       const data = await response.json();
       if (data.statusCode === 500) {
-        alert("Invalid credentials");
+        showInvalidCredentialsAlert();
       } else {
         if (data.role === "ADMIN") {
           navigate('/admin-dashboard'); // Navigate to the admin page
