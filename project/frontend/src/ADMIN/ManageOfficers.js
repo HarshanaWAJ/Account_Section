@@ -1,9 +1,11 @@
 import './css/manageOfficers.css';
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'; // Import SweetAlert
 
 const ManageOfficers = () => {
   const [officers, setOfficers] = useState([]);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchOfficers = async () => {
@@ -29,6 +31,46 @@ const ManageOfficers = () => {
 
     fetchOfficers(); // Call the fetch function on component mount
   }, []);
+
+  const handleDelete = async (userID) => {
+    // Use SweetAlert for confirmation
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`http://localhost:8088/api/admin/delete-user/${userID}`, {
+          method: 'DELETE',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to delete officer');
+        }
+
+        // Remove the deleted officer from state
+        setOfficers(officers.filter(officer => officer.id !== userID));
+        setSuccess('Officer deleted successfully!'); // Set success message
+        setError(null);
+
+        // Show success message
+        Swal.fire(
+          'Deleted!',
+          'The officer has been deleted.',
+          'success'
+        );
+      } catch (error) {
+        console.error(error);
+        setError('An error occurred while deleting the officer.'); // Handle error
+        setSuccess(null);
+      }
+    }
+  };
 
   return (
     <div className="manage-officers container mt-4">
@@ -58,7 +100,12 @@ const ManageOfficers = () => {
                 <td>{officer.email}</td>
                 <td>
                   <button className="btn btn-warning btn-sm mr-2 btn-manage-officers">Edit</button>
-                  <button className="btn btn-danger btn-sm btn-manage-officers">Delete</button>
+                  <button 
+                    className="btn btn-danger btn-sm btn-manage-officers"
+                    onClick={() => handleDelete(officer.id)} // Call handleDelete with officer ID
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))
