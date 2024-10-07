@@ -102,7 +102,3 @@ select {
   .password-toggle-btn:hover {
     background-color: transparent;
   }
-
-  .form-group select {
-    width: 100%;
-  }
