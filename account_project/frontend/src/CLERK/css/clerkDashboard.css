@@ -1,0 +1,60 @@
+.dashboard-content2{
+  display: flex;
+}
+
+.add-demand-button{
+  display: flex; /* Aligns children horizontally */
+  gap: 0px; /* Space between boxes */
+  margin-top: 70px;
+  align-items: center;
+} 
+
+.nav-container {
+    display: flex;
+    justify-content: center; /* Center the nav boxes */
+    gap: 20px; /* Adjust the gap as needed */
+
+}
+
+.nav-box1{
+  border: 2px solid black; /* Change color as needed */
+  padding: 25px;
+  border-radius: 15px;
+  border-width: 0px;
+  background-color: #000565; /* Dark background for contrast */
+  flex: 1; /* Allows boxes to grow equally */
+  text-align: center; /* Center text inside the box */
+  transition: transform 0.2s, background-color 0.3s, color 0.3s; /* Smooth transition for effects */
+  font-weight: bold;
+  text-decoration: none; /* This removes the underline */
+  color: white;
+  font-size: xx-large;
+}
+
+.nav-box1:hover {
+  background-color: #d0e7ff; /* Change background on hover */
+  transform: scale(1.05); /* Slightly enlarge the box on hover */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+  color: black;
+}
+
+.nav-box1 a {
+  text-decoration: none;
+  color: white; /* Default link color */
+  font-weight: bold;
+  font-size: xx-large;
+  transition: color 0.3s; /* Smooth transition for text color */
+}
+
+.nav-box:hover a {
+  color: black; /* Change link color to black on hover */
+}
+
+.logo4{
+  display: block;
+  margin: 0 auto;
+  width: 250px;
+  height: 250px;
+  margin-top: 50px;
+}
+

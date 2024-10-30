@@ -1,0 +1,8 @@
+.edit-project-form{
+  width: 30%;
+  background-color: aliceblue;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Corrected box-shadow */
+  padding-top: 20px;
+  padding-bottom: 40px;
+}

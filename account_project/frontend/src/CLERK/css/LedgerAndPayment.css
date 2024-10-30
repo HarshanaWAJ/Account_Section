@@ -1,0 +1,28 @@
+/* LedgerAndPaymentForm.css */
+.sub-form {
+    border-left: 2px solid #ccc;
+    padding-left: 20px;
+  }
+  
+  h5 {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .form-label {
+    font-size: 14px;
+    color: #343a40;
+  }
+  
+  .form-control {
+    box-shadow: none;
+  }
+  
+  .d-flex {
+    align-items: flex-start;
+  }
+  
+  .container001{
+    margin-top: 100px;
+  }
+ 

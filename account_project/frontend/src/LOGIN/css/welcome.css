@@ -1,0 +1,14 @@
+.nav-bar {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+}
+
+.nav-bar .logo .logo-name {
+    
+}

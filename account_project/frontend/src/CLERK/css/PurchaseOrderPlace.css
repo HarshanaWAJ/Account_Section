@@ -1,0 +1,27 @@
+/* custom.css */
+.po-form {
+    margin: 20px;
+    background-color: #f2f4f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .po-form-label {
+    font-weight: bold;
+  }
+  
+  .po-submit-button {
+    background-color: #000565;
+    color: white;
+    margin-top: 20px;
+  }
+  
+  .po-submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .card001{
+    width: 700px;
+    margin-left: 23%;
+  }
