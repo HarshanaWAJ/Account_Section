@@ -30,17 +30,17 @@ public class Supplier {
 
     // One-to-Many relationship with Procurement
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "procurements_id")
+    @JoinColumn(name = "procurements_id", nullable = true)
     private Procurement procurement;
 
     // One-to-Many relationship with ProcurementBy_DG
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "procurements_by_DG_id")
+    @JoinColumn(name = "procurements_by_DG_id", nullable = true)
     private ProcurementBy_DG procurementByDg;
 
     // One-to-Many relationship with ProcurementBy_RPC
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "procurements_by_RPC_id")
+    @JoinColumn(name = "procurements_by_RPC_id", nullable = true)
     private ProcurementBy_RPC procurementByRpc;
 
     // One-to-Many relationship with Item

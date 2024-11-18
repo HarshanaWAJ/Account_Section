@@ -165,7 +165,7 @@ const PurchaseOrderPlace = () => {
             </Form.Group>
 
             <div className="d-flex justify-content-end">
-              <Button className="btn btn-success" type="submit">
+              <Button className="btn btn-success w-100" type="submit">
                 Submit
               </Button>
             </div>

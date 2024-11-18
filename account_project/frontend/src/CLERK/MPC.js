@@ -223,7 +223,7 @@ const MPC = () => {
             </button>
 
             <div className="d-flex justify-content-end">
-              <button type="submit" className="btn btn-success">
+              <button type="submit" className="btn btn-success w-100">
                 Submit
               </button>
             </div>

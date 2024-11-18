@@ -30,7 +30,7 @@ public class ProcurementBy_DG {
     private BigDecimal value;
     private int No_Of_Quotation_Received;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
     @JoinColumn(name = "quotation_call_id")
     private QuotationCall quotationCall;
 

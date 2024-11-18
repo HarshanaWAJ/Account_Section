@@ -205,8 +205,11 @@ const Projects = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center mb-4">Others (Qstor/MT)</h2>
-      <form onSubmit={handleSubmit}>
+      <div className="card shadow-lg card003">
+      <div className="card-header001 bg-primary text-white border rounded p-1">
+      <h2 className="text-white mb-4">Others (Qstor/MT)</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
         <div className="mb-3 input-box1">
           <label htmlFor="referenceNumber" className="form-label">Reference Number</label>
           <input
@@ -383,6 +386,7 @@ const Projects = () => {
           <button type="submit" className="btn btn-success item-submit">Submit</button>
         </div>
       </form>
+      </div>
     </div>
   );
 };

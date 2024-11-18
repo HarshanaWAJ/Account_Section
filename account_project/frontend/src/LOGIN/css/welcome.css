@@ -4,11 +4,190 @@
 }
 
 .logo {
-    height: 100px;
-    width: 100px;
+    height: 120px;
+    width: 120px;
     border-radius: 100%;
 }
 
-.nav-bar .logo .logo-name {
+.footer {
+    margin-top: 2.0rem;
+    background-color: #f1f1f1; 
+    padding: 40px 20px; /* Increase padding for a spacious feel */
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 30px; /* More space between columns */
+    border-top: 1px solid #ccc; 
+}
+
+.footer div {
+    display: flex;
+    align-items: center; /* Center items vertically */  
+}
+
+.footer div div:first-child {
+    margin-right: 15px; /* Space between icon and text */
+    font-size: 24px; /* Larger icon size for visibility */
+    color: black; /* Icon color */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+}
+
+.address-line-1 {
+    line-height: 1.6; 
+    color: #333; 
+}
+
+.email, .contact, .fax {
+    color: #555; 
+}
+
+.copyright {
+    grid-column: 1 / -1; 
+    text-align: center; 
+    margin-top: 30px; 
+    font-size: 16px; 
+    color: #666; 
+    padding-top: 10px; /* Space above the copyright */
+    border-top: 1px solid #ccc; /* Separate from the rest of the footer */
+    margin-bottom: 0; /* Remove extra margin */
+    display: block !important; 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .footer {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
+    }
+    .footer div {
+        justify-content: center; /* Center items in the stack */
+        margin-bottom: 20px; /* Space between stacked items */
+    }
+}
+
+.logo-name {
+    margin-left: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size:25px ;
+    font-weight: 600;
+}
+
+.login-button {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center icon and text vertically */
+    justify-content: center; /* Center content horizontally */
+    background-color: white; /* Button color */
+    color: black; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    font-size: 18px; /* Font size */
+    text-decoration: none; /* Remove underline from link */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    margin-left: auto;/* Push to the right */
+    margin-right: 2%;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.login-button i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.login-button:hover {
+    background-color: white; /* Darker color on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-button {
+        margin-left: 0; /* Reset margin for small screens */
+        width: 100%; /* Full width on small screens */
+        justify-content: center; /* Center button */
+        padding: 12px; /* Increased padding */
+        font-size: 18px; /* Slightly larger text */
+    }
+    
+    .nav-bar {
+        flex-direction: column; /* Stack items vertically on small screens */
+        align-items: flex-start; /* Align to start */
+    }
+
+    .logo-name {
+        margin-left: 0; /* Remove margin on smaller screens */
+        margin-top: 10px; /* Add some space above */
+    }
+}
+
+.started-button {
+    display: flex;
+    margin-left: -100%;
+    margin-top: 10%;
+    max-width: 10%;
+    align-items: center; /* Center icon and text vertically */
+    justify-content: center; /* Center content horizontally */
+    background-color: white; /* Button color */
+    color: black; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding */
+    font-size: 20px; /* Font size */
+    text-decoration: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.2s; 
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
     
 }
+
+.started-button:hover {
+    background-color: white; 
+    transform: scale(1.05); 
+}
+
+.welcome-body {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 20px; 
+}
+
+.system-head {
+    font-size: 2em; /* Larger font size for emphasis */
+    font-weight: bold; /* Make the text bold */
+    margin-bottom: 10rem; /* Space below the heading */
+    color: #333; 
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 3.2rem;
+}
+
+.about-system {
+    font-size: 1.2em; /* Slightly larger text */
+    color: #555; /* Softer color for readability */
+    margin-bottom: 20px; /* Space below the text */
+    max-width: 60%; /* Limit width for better readability */
+}
+
+.welcome-img {
+    width: 50%; /* Fixed width for the image */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .welcome-body {
+        flex-direction: column; /* Stack elements on smaller screens */
+        align-items: center; /* Center all items */
+        text-align: center; /* Center text */
+    }
+    
+    .welcome-img {
+        margin-top: 20px; /* Space above the image */
+        width: 80%; /* Make image responsive */
+    }
+
+    .about-system {
+        max-width: 100%; /* Allow text to use full width */
+    }
+}
+

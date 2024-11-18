@@ -11,16 +11,50 @@ const DG = () => {
   const [approvalLetterDate, setApprovalLetterDate] = useState('');
   const [referenceNo, setReferenceNo] = useState('');
   const [value, setValue] = useState('');
-  const [noOfQuotationReceived, setNoOfQuotationReceived] = useState('');
-  const [approvedBy, setApprovedBy] = useState('');
+  const [noOfQuotationReceived, setNoOfQuotationReceived] = useState();
   const [approvedDate, setApprovedDate] = useState('');
-  const [quotationCallId, setQuotationCallId] = useState('');
-  const [suppliers, setSuppliers] = useState([{ name: '', contact: '', items: [] }]);
+  const [quotationCallId, setQuotationCallId] = useState(''); // Ensure this is properly updated
+  const [suppliers, setSuppliers] = useState([{ supplierName: '', items: [] }]);
   const [currentItem, setCurrentItem] = useState('');
   const [currentQuantity, setCurrentQuantity] = useState('');
   const [error, setError] = useState('');
+  
 
-  // Handle form submission
+  // Fetch the Quotation Call ID when QC Number changes
+  const fetchQCNumberDetails = async (qcNo) => {
+    try {
+      const response = await axiosInstance.get(`/api/quotations/get-by-qc-no/${qcNo}`);
+      const qcDetails = response.data;
+      console.log(qcDetails.id);
+      
+      if (qcDetails) {
+        if (qcDetails.exists) {
+          setError('QC Number already exists. Please enter a different QC Number.');
+          setQuotationCallId(qcDetails.quotationCallId); // Clear quotation call ID if the QC number exists
+        } else {
+          setError('QC Number is available.');
+          setQuotationCallId(qcDetails.quotationCallId); // Set the quotation call ID from the API response
+        }
+      } else {
+        setError('QC Number not found.');
+        setQuotationCallId(''); // Reset if QC number is not found
+      }
+    } catch (err) {
+      console.error('Error fetching QC number details:', err);
+      setError('Error fetching QC number details. Please try again.');
+      setQuotationCallId(''); // Reset if there's an error
+    }
+  };
+
+  // Call Fetch Quotation Details
+  const handleQcNoChange = async (e) => {
+    const value = e.target.value;
+    setQcNo(value);
+    if (value) {
+      await fetchQCNumberDetails(value);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -30,19 +64,23 @@ const DG = () => {
         approvalLetterDate,
         reference: referenceNo,
         value,
-        no_of_quotation_received: noOfQuotationReceived,
-        approvedBy,
+        NoOfQuotationReceived: noOfQuotationReceived,
+        approvedBy: 'DG',
         approvedDate,
         status: 'approved',
-        quotation_call_id: quotationCallId,
+        quotationCallId: quotationCallId,
+        quotationCall: {id: quotationCallId}
     };
+
+    console.log(noOfQuotationReceived);
+    
 
     let procurementId;
 
     try {
-        // First, create the procurement
+        // Submit procurement data to create procurement
         const procurementResponse = await axiosInstance.post('/api/procurements-dg/add', procurementData);
-        
+
         if (procurementResponse.status === 201) {
             procurementId = procurementResponse.data.id;
 
@@ -50,25 +88,31 @@ const DG = () => {
             const createdSuppliers = [];
 
             try {
-                // Prepare suppliers with their items
-                await Promise.all(suppliers.map(async (supplier) => {
-                    const supplierResponse = await axiosInstance.post('/api/suppliers/add-supplier', {
-                        supplierName: supplier.name,
-                        procurement: { id: procurementId }
-                    });
-
-                    const supplierId = supplierResponse.data.id;
-                    createdSuppliers.push(supplierId); // Store the supplier ID
-
-                    // Prepare items for this supplier
-                    await Promise.all(supplier.items.map(async (item) => {
-                        await axiosInstance.post('/api/supplier-items/add-supplier-items', {
-                            name: item.name,
-                            quantity: item.quantity,
-                            supplier: { id: supplierId }
-                        });
-                    }));
-                }));
+              // Collect the supplier data into an array to send in one request
+              const suppliersData = suppliers.map(supplier => ({
+                  supplierName: supplier.supplierName,
+                  procurementByDg: { id: procurementId },
+              }));
+          
+              // Send the array of suppliers to the backend
+              const supplierResponse = await axiosInstance.post('/api/suppliers/add-supplier', suppliersData);
+          
+              // Assuming the response contains an array of supplier objects with their IDs
+              const supplierIds = supplierResponse.data.map(supplier => supplier.id);
+          
+              // Now for each supplier, send their items in parallel
+              await Promise.all(suppliers.map(async (supplier, index) => {
+                  const supplierId = supplierIds[index]; // Get the corresponding supplier ID from the response
+          
+                  // Prepare and insert items for this supplier
+                  await Promise.all(supplier.items.map(async (item) => {
+                      await axiosInstance.post('/api/supplier-items/add-supplier-items', {
+                          name: item.name,
+                          quantity: item.quantity,
+                          supplier: { id: supplierId },
+                      });
+                  }));
+              }));
 
                 // Success alert
                 Swal.fire({
@@ -76,18 +120,18 @@ const DG = () => {
                     title: 'Success',
                     text: 'Data submitted successfully!',
                 }).then(() => {
-                    navigate('/dashboard');
+                    navigate('/clerk-dashboard');
                 });
 
             } catch (supplierError) {
                 console.error('Error adding suppliers or items:', supplierError);
 
-                // Rollback: Delete created suppliers and the procurement
+                // Rollback: Delete created suppliers and the procurement if something fails
                 await axiosInstance.delete(`/api/procurements-dg/delete-by-id/${procurementId}`);
+
                 await Promise.all(createdSuppliers.map(async (id) => {
                     await axiosInstance.delete(`/api/suppliers/delete-by-id/${id}`);
                 }));
-
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -106,38 +150,8 @@ const DG = () => {
 };
 
 
-
-  const fetchQCNumberDetails = async (qcNo) => {
-    try {
-      const response = await axiosInstance.get(`/api/quotations/get-by-qc-no/${qcNo}`);
-      const qcDetails = response.data;
-
-      if (qcDetails) {
-        if (qcDetails.exists) {
-          setError('QC Number already exists. Please enter a different QC Number.');
-        } else {
-          setError('QC Number is available.');
-        }
-      } else {
-        setError('QC Number not found.');
-      }
-    } catch (err) {
-      console.error('Error fetching QC number details:', err);
-      setError('Error fetching QC number details. Please try again.');
-    }
-  };
-
-  const handleQcNoChange = async (e) => {
-    const value = e.target.value;
-    setQcNo(value);
-
-    if (value) {
-      await fetchQCNumberDetails(value);
-    }
-  };
-
   const addSupplier = () => {
-    setSuppliers([...suppliers, { name: '', contact: '', items: [] }]);
+    setSuppliers([...suppliers, { supplierName: '', items: [] }]);
   };
 
   const updateSupplier = (index, field, value) => {
@@ -239,17 +253,7 @@ const DG = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <label className="form-label">Approved By</label>
-              <input
-                type="text"
-                className="form-control"
-                value={approvedBy}
-                onChange={(e) => setApprovedBy(e.target.value)}
-                required
-                placeholder="Approved By"
-              />
-            </div>
+            
 
             <div className="mb-3">
               <label className="form-label">Approved Date</label>
@@ -262,18 +266,6 @@ const DG = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <label className="form-label">Quotation Call ID</label>
-              <input
-                type="text"
-                className="form-control"
-                value={quotationCallId}
-                onChange={(e) => setQuotationCallId(e.target.value)}
-                required
-                placeholder="Quotation Call ID"
-              />
-            </div>
-
             <h4 className="text-secondary">Suppliers</h4>
             {suppliers.map((supplier, supplierIndex) => (
               <div key={supplierIndex} className="mb-3 border p-3 rounded bg-light">
@@ -283,8 +275,8 @@ const DG = () => {
                     type="text"
                     className="form-control me-2"
                     placeholder="Supplier Name"
-                    value={supplier.name}
-                    onChange={(e) => updateSupplier(supplierIndex, 'name', e.target.value)}
+                    value={supplier.supplierName}
+                    onChange={(e) => updateSupplier(supplierIndex, 'supplierName', e.target.value)}
                     required
                   />
                   <button
@@ -363,7 +355,7 @@ const DG = () => {
             </button>
 
             <div className="d-flex justify-content-end">
-              <button type="submit" className="btn btn-success">
+              <button type="submit" className="btn btn-success w-100">
                 Submit
               </button>
             </div>

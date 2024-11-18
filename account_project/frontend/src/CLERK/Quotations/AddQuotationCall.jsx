@@ -185,8 +185,8 @@ const QuotationForm = () => {
     return (
         <div className="container mt-4">
             <div className="card shadow" style={{ maxWidth: '600px', margin: 'auto' }}>
-                <div className="card-header text-center">
-                    <h2 className="mb-0">Quotation Calling Form</h2>
+                <div className="card-header bg-primary text-white">
+                    <h3 className="mb-0">Quotation Calling Form</h3>
                 </div>
                 <div className="card-body">
                     {error && (
@@ -350,7 +350,7 @@ const QuotationForm = () => {
                             )}
                         </div>
 
-                        <button type="submit" className="btn btn-primary w-100">Submit</button>
+                        <button type="submit" className="btn btn-success w-100">Submit</button>
                     </form>
                 </div>
             </div>

@@ -33,13 +33,16 @@ public class QuotationCall {
 
     @ManyToOne
     @JoinColumn(name = "demand_id")
+    @JsonIgnore
     private Demand demand;
 
     @OneToMany(mappedBy = "quotationCall", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Procurement> procurements;
 
     // One QuotationCall can be referenced by many Purchase Orders
     @OneToMany(mappedBy = "quotationCall", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PO> purchaseOrders;
 
 }

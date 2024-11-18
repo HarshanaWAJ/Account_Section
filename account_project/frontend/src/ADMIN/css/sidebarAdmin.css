@@ -1,0 +1,18 @@
+.sidebar {
+    min-width: 250px;
+    font-size: 1.1rem;
+  }
+  
+  .sidebar-link {
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
