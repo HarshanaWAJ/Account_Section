@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import './css/rpc.css'; // Import the custom CSS
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import './css/rpc.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import axiosInstance from '../axiosInstance';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const RPC = () => {
+  const navigate = useNavigate();
   const [qcNo, setQcNo] = useState('');
   const [approvalSendDate, setApprovalSendDate] = useState(''); 
   const [approvalReceivedDate, setApprovalReceivedDate] = useState(''); 
@@ -12,11 +16,140 @@ const RPC = () => {
   const [suppliers, setSuppliers] = useState([{ name: '', contact: '', items: [] }]);
   const [currentItem, setCurrentItem] = useState('');
   const [currentQuantity, setCurrentQuantity] = useState('');
+  const [quotationCallId, setQuotationCallId] = useState(''); 
+  const [error, setError] = useState('');
+
+
+  // Fetch the Quotation Call ID when QC Number changes
+  const fetchQCNumberDetails = async (qcNo) => {
+    try {
+      const response = await axiosInstance.get(`/api/quotations/get-by-qc-no/${qcNo}`);
+      const qcDetails = response.data;
+      console.log("Quotation Call Id:", qcDetails.id);
+      
+      if (qcDetails) {
+        if (qcDetails.exists) {
+          setError('QC Number already exists. Please enter a different QC Number.');
+          
+        } else {
+          setError('QC Number is available.');
+          setQuotationCallId(qcDetails.id);
+        }
+      } else {
+        setError('QC Number not found.');
+        setQuotationCallId(''); // Reset if QC number is not found
+      }
+    } catch (err) {
+      console.error('Error fetching QC number details:', err);
+      setError('Error fetching QC number details. Please try again.');
+      setQuotationCallId(''); // Reset if there's an error
+    }
+  };
+
+  // Call Fetch Quotation Details
+  const handleQcNoChange = async (e) => {
+    const value = e.target.value;
+    setQcNo(value);
+    if (value) {
+      await fetchQCNumberDetails(value);
+    }
+  };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ qcNo, approvalSendDate, approvalReceivedDate, referenceNo, value, noOfQuotationReceived, suppliers });
+    
+    // Data Preparation
+      const procurementData = {
+        qcNo,
+        sendDate: approvalSendDate,
+        approvedDate: approvalReceivedDate,
+        reference: referenceNo,
+        value,
+        noOfQuotationReceived,  
+        approvedBy: 'RPC',
+        status: 'approved',
+        quotationCall: {id: quotationCallId}
+    };
+
+    // Variable for procrument id
+    let procurementId;
+
+    console.log("Procurement Details: ", procurementData);
+    
+
+      try {
+        // Submit procurement data to create procurement
+        const procurementResponse = await axiosInstance.post('/api/procurement_rpc/add', procurementData);
+
+        if (procurementResponse.status === 201) {
+            procurementId = procurementResponse.data.id;
+
+            // Track created suppliers and their IDs for rollback
+            const createdSuppliers = [];
+
+            try {
+              // Collect the supplier data into an array to send in one request
+              const suppliersData = suppliers.map(supplier => ({
+                  supplierName: supplier.name,
+                  procurementByRpc: { id: procurementId },
+              }));
+
+              console.log("Supplier Details: ", suppliersData);
+              
+          
+              // Send the array of suppliers to the backend
+              const supplierResponse = await axiosInstance.post('/api/suppliers/add-supplier', suppliersData);
+          
+              const supplierIds = supplierResponse.data.map(supplier => supplier.id);
+          
+              // Now for each supplier, send their items in parallel
+              await Promise.all(suppliers.map(async (supplier, index) => {
+                  const supplierId = supplierIds[index]; // Get the corresponding supplier ID from the response
+          
+                  // Prepare and insert items for this supplier
+                  await Promise.all(supplier.items.map(async (item) => {
+                      await axiosInstance.post('/api/supplier-items/add-supplier-items', {
+                          name: item.name,
+                          quantity: item.quantity,
+                          supplier: { id: supplierId },
+                      });
+                  }));
+              }));
+
+                // Success alert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Data submitted successfully!',
+                }).then(() => {
+                    navigate('/clerk-dashboard');
+                });
+
+            } catch (supplierError) {
+                console.error('Error adding suppliers or items:', supplierError);
+
+                // Rollback: Delete created suppliers and the procurement if something fails
+                await axiosInstance.delete(`/api/procurements-dg/delete-by-id/${procurementId}`);
+
+                await Promise.all(createdSuppliers.map(async (id) => {
+                    await axiosInstance.delete(`/api/suppliers/delete-by-id/${id}`);
+                }));
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add suppliers or items. Data has been rolled back.',
+                });
+            }
+        }
+    } catch (procurementError) {
+        console.error('Error submitting procurement data:', procurementError);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to submit procurement data. Please try again.',
+        });
+    }
   };
 
   // Add a new supplier row
@@ -62,6 +195,11 @@ const RPC = () => {
           <h3>RPC Form</h3>
         </div>
         <div className="card-body">
+        {error && (
+            <div className={`alert ${error.includes('QC Number is available.') ? 'alert-success' : 'alert-danger'}`}>
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">QC Number</label>
@@ -69,7 +207,7 @@ const RPC = () => {
                 type="text"
                 className="form-control"
                 value={qcNo}
-                onChange={(e) => setQcNo(e.target.value)}
+                onChange={handleQcNoChange}
                 required
                 placeholder="QC Number"
               />
@@ -144,7 +282,6 @@ const RPC = () => {
                     placeholder="Supplier Name"
                     value={supplier.name}
                     onChange={(e) => updateSupplier(supplierIndex, 'name', e.target.value)}
-                    required
                   />
                   <button
                     type="button"
@@ -164,7 +301,6 @@ const RPC = () => {
                       placeholder="Item"
                       value={currentItem}
                       onChange={(e) => setCurrentItem(e.target.value)}
-                      required
                     />
                     <input
                       type="number"
@@ -173,7 +309,6 @@ const RPC = () => {
                       value={currentQuantity}
                       onChange={(e) => setCurrentQuantity(e.target.value)}
                       min="1"
-                      required
                     />
                     <button
                       type="button"

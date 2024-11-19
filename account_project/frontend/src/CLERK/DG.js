@@ -13,11 +13,15 @@ const DG = () => {
   const [value, setValue] = useState('');
   const [noOfQuotationReceived, setNoOfQuotationReceived] = useState();
   const [approvedDate, setApprovedDate] = useState('');
-  const [quotationCallId, setQuotationCallId] = useState(''); // Ensure this is properly updated
+  const [quotationCallId, setQuotationCallId] = useState(''); 
   const [suppliers, setSuppliers] = useState([{ supplierName: '', items: [] }]);
   const [currentItem, setCurrentItem] = useState('');
   const [currentQuantity, setCurrentQuantity] = useState('');
   const [error, setError] = useState('');
+
+  //Debugging
+  console.log("Recieved Number of Quotations: ", noOfQuotationReceived);
+  
   
 
   // Fetch the Quotation Call ID when QC Number changes
@@ -25,15 +29,15 @@ const DG = () => {
     try {
       const response = await axiosInstance.get(`/api/quotations/get-by-qc-no/${qcNo}`);
       const qcDetails = response.data;
-      console.log(qcDetails.id);
+      console.log("Quotation Call Id:", qcDetails.id);
       
       if (qcDetails) {
         if (qcDetails.exists) {
           setError('QC Number already exists. Please enter a different QC Number.');
-          setQuotationCallId(qcDetails.quotationCallId); // Clear quotation call ID if the QC number exists
+          
         } else {
           setError('QC Number is available.');
-          setQuotationCallId(qcDetails.quotationCallId); // Set the quotation call ID from the API response
+          setQuotationCallId(qcDetails.id);
         }
       } else {
         setError('QC Number not found.');
@@ -55,6 +59,7 @@ const DG = () => {
     }
   };
 
+  // Function for submit data
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,7 +69,7 @@ const DG = () => {
         approvalLetterDate,
         reference: referenceNo,
         value,
-        NoOfQuotationReceived: noOfQuotationReceived,
+        noOfQuotationReceived,  
         approvedBy: 'DG',
         approvedDate,
         status: 'approved',
@@ -72,10 +77,9 @@ const DG = () => {
         quotationCall: {id: quotationCallId}
     };
 
-    console.log(noOfQuotationReceived);
-    
 
     let procurementId;
+    
 
     try {
         // Submit procurement data to create procurement
@@ -247,13 +251,12 @@ const DG = () => {
                 type="number"
                 className="form-control"
                 value={noOfQuotationReceived}
-                onChange={(e) => setNoOfQuotationReceived(e.target.value)}
+                onChange={(e) => setNoOfQuotationReceived(parseInt(e.target.value))}
                 required
                 placeholder="No. of Quotation Received"
               />
-            </div>
 
-            
+            </div>
 
             <div className="mb-3">
               <label className="form-label">Approved Date</label>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './css/LedgerAndPayment.css'; // Ensure this CSS file is present for styling
+import './css/LedgerAndPayment.css';
 
 function LedgerAndPaymentForm() {
   const [formData, setFormData] = useState({
