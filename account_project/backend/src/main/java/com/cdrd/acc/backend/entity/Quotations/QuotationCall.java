@@ -33,7 +33,7 @@ public class QuotationCall {
 
     @ManyToOne
     @JoinColumn(name = "demand_id")
-    @JsonIgnore
+    @JsonBackReference
     private Demand demand;
 
     @OneToMany(mappedBy = "quotationCall", cascade = CascadeType.ALL, orphanRemoval = true)

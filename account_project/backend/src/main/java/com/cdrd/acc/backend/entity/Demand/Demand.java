@@ -56,6 +56,7 @@ public abstract class Demand {
     private BigDecimal allocationPerYear;
 
     @OneToMany(mappedBy = "demand", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<QuotationCall> quotations = new HashSet<>();
 
 }

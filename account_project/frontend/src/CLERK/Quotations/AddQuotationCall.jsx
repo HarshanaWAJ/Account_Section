@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const QuotationForm = () => {
     const navigate = useNavigate(); // Correctly get the navigate function
 
+    const [demandId, setDemandId] = useState('');
+
     const [formData, setFormData] = useState({
         demandId: '',
         demandNo: '',
@@ -18,10 +20,12 @@ const QuotationForm = () => {
         projectNo: '',
         projectName: '',
         itemDescription: '',
+        
     });
 
     const [error, setError] = useState('');
     const [items, setItems] = useState([]);
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -56,6 +60,10 @@ const QuotationForm = () => {
                     setError('Demand Found');
                     fetchItemsByDemand(demand.id);
                     fetchProjectNo(demand.id);
+                    setDemandId(demand.id);
+                    
+                    console.log("Demand ID: ", demandId);
+                    
                 } else {
                     setError('Quotation Call Details Are Already Available in the System.');
                 }
@@ -117,6 +125,7 @@ const QuotationForm = () => {
         }
     };
 
+    //Submit Data
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -148,6 +157,7 @@ const QuotationForm = () => {
             } : null,
             itemDescription: formData.itemDescription,
         };
+        
 
         try {
             const response = await axiosInstance.post('/api/quotations/add-quotation-call', quotationCallData);

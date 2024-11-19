@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/procurement")
+@RequestMapping("api/procurement-mpc")
 public class ProcurementController {
 
     @Autowired
