@@ -28,9 +28,9 @@ public class ProcurementBy_DG {
     private String approvedBy;
     private String reference;
     private BigDecimal value;
-    private int No_Of_Quotation_Received;
+    private int noOfQuotationReceived;
 
-    @ManyToOne(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quotation_call_id")
     private QuotationCall quotationCall;
 

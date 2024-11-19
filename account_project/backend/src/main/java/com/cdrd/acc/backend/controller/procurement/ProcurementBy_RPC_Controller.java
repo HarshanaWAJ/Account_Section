@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/procurement_rpc")
+@RequestMapping("/api/procurement_rpc")
 public class ProcurementBy_RPC_Controller {
 
     @Autowired
     private ProcurementBy_RPC_Service procurementByRPCService;
 
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<ProcurementBy_RPC>> getAllProcurements() {
         try {
             List<ProcurementBy_RPC> procurements = procurementByRPCService.getAllProcurements();
@@ -27,7 +27,7 @@ public class ProcurementBy_RPC_Controller {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<ProcurementBy_RPC> getProcurementById(@PathVariable Integer id) {
         try {
             return procurementByRPCService.getProcurementById(id)
@@ -39,7 +39,7 @@ public class ProcurementBy_RPC_Controller {
         }
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<ProcurementBy_RPC> createProcurement(@RequestBody ProcurementBy_RPC procurementByRPC) {
         try {
             ProcurementBy_RPC createdProcurement = procurementByRPCService.createProcurement(procurementByRPC);
@@ -50,7 +50,7 @@ public class ProcurementBy_RPC_Controller {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ProcurementBy_RPC> updateProcurement(@PathVariable Integer id, @RequestBody ProcurementBy_RPC procurementByRPC) {
         try {
             ProcurementBy_RPC updatedProcurement = procurementByRPCService.updateProcurement(id, procurementByRPC);
@@ -64,7 +64,7 @@ public class ProcurementBy_RPC_Controller {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteProcurement(@PathVariable Integer id) {
         try {
             boolean deleted = procurementByRPCService.deleteProcurement(id);
