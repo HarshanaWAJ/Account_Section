@@ -20,6 +20,8 @@ public class Project {
     private Date endingDate;
     private String wing;
 
+    private String projectType;
+
     @Column(precision = 25, scale = 2)
     private BigDecimal estimatedValue;
 }

@@ -92,7 +92,7 @@ const MPC = () => {
                 // Collect the supplier data into an array to send in one request
                 const suppliersData = suppliers.map(supplier => ({
                     supplierName: supplier.name,
-                    procurementByMpc: { id: procurementId },
+                    procurement: { id: procurementId },
                 }));
             
                 // Send the array of suppliers to the backend
