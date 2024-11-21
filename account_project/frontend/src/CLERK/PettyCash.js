@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Sidebar from './SidebarClerk';
+
 
 const PettyCashForm = () => {
     const [formData, setFormData] = useState({
@@ -42,6 +44,8 @@ const PettyCashForm = () => {
     };
   
     return (
+      <div className="d-flex">
+        <Sidebar />
       <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-4">
@@ -126,6 +130,7 @@ const PettyCashForm = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     );
   };

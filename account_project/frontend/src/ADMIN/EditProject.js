@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './css/EditProjectForm.css';
+import Sidebar from './SidebarAdmin';
 
 const ProjectForm = ({ project, onSave, onCancel }) => {
   const [projectNo, setProjectNo] = useState('');
@@ -31,6 +32,8 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
   };
 
   return (
+    <div className='d-flex'>
+      <Sidebar />
     <div className="container mt-3 edit-project-form">
       <h2 className="text-center mb-4">Edit Project</h2>
       <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
@@ -109,6 +112,7 @@ const ProjectForm = ({ project, onSave, onCancel }) => {
         <button type="submit" className="btn btn-primary w-100">Save Project</button>
         <button type="button" className="btn btn-secondary w-100 mt-2" onClick={onCancel}>Cancel</button>
       </form>
+    </div>
     </div>
   );
 };

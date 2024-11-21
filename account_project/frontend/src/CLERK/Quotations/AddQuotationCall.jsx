@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axiosInstance from '../../axiosInstance';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'; 
+import Sidebar from '../SidebarClerk';
 
 const QuotationForm = () => {
     const navigate = useNavigate(); // Correctly get the navigate function
@@ -193,6 +194,8 @@ const QuotationForm = () => {
     };
 
     return (
+        <div className="d-flex">
+        <Sidebar />
         <div className="container mt-4">
             <div className="card shadow" style={{ maxWidth: '600px', margin: 'auto' }}>
                 <div className="card-header bg-primary text-white">
@@ -217,7 +220,7 @@ const QuotationForm = () => {
                                     checked={formData.type === 'projectDemand'}
                                     onChange={handleChange}
                                 />
-                                <label className="form-check-label mb-2" htmlFor="projectDemand">
+                                <label className="form-check-label mb-2" htmlFor="">
                                     Quotation Call for Project Demands
                                 </label>
                             </div>
@@ -236,7 +239,7 @@ const QuotationForm = () => {
                                 </label>
                             </div>
                         </fieldset>
-
+projectDemand
                         <div className="mb-3">
                             <label htmlFor="demandNo" className="form-label">Demand No.</label>
                             <input
@@ -365,6 +368,7 @@ const QuotationForm = () => {
                 </div>
             </div>
         </div>
+    </div>
     );
 };
 

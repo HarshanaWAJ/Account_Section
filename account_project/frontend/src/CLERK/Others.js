@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/others.css';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import axiosInstance from '../axiosInstance';
+import Sidebar from './SidebarClerk';
+
 
 const Projects = () => {
   const voteMapping = {
@@ -204,6 +206,8 @@ const Projects = () => {
   
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-4">
       <div className="card shadow-lg card003">
       <div className="card-header001 bg-primary text-white border rounded p-1">
@@ -387,6 +391,7 @@ const Projects = () => {
         </div>
       </form>
       </div>
+    </div>
     </div>
   );
 };

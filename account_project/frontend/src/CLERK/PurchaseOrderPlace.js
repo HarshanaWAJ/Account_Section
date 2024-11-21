@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './css/PurchaseOrderPlace.css'; // Import your custom CSS
+import Sidebar from './SidebarClerk';
+
 
 const PurchaseOrderPlace = () => {
   const [formData, setFormData] = useState({
@@ -42,6 +44,8 @@ const PurchaseOrderPlace = () => {
   };
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-5">
       <div className="card shadow-lg card001">
         <div className="card-header bg-primary text-white">
@@ -172,6 +176,7 @@ const PurchaseOrderPlace = () => {
           </Form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

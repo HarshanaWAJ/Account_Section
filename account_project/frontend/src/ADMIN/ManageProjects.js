@@ -3,6 +3,7 @@ import './css/manageprojects.css';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate instead
 import axiosInstance from '../axiosInstance';
+import Sidebar from './SidebarAdmin';
 
 const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -65,7 +66,9 @@ const ManageProjects = () => {
   }
 
   return (
-    <div className="manage-projects">
+    <div className='d-flex'>
+      <Sidebar />
+    <div className="manage-projects container mt-4">
       <h2>Manage Projects</h2>
       {projects.length === 0 ? (
         <div className="alert alert-info" role="alert">
@@ -104,6 +107,7 @@ const ManageProjects = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

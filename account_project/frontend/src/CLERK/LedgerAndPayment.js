@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import './css/LedgerAndPayment.css';
+import Sidebar from './SidebarClerk';
 
 function LedgerAndPaymentForm() {
   const [formData, setFormData] = useState({
@@ -41,6 +42,8 @@ function LedgerAndPaymentForm() {
   };
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-5">
       <div className="card shadow-lg container001">
         <div className="card-header bg-primary text-white">
@@ -257,6 +260,7 @@ function LedgerAndPaymentForm() {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 }

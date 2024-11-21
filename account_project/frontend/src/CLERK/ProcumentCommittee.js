@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import './css/procumentCommittee.css'; // Ensure this CSS file is present for styling
+import Sidebar from './SidebarClerk';
 
 
 const ProcumentCommittee = () => {
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-4">
       <h2 className="text-center mb-4 procument-committee">Procument Committee</h2>
       <img src="/crd logo.png" alt="CRD Logo" className="img-fluid mx-auto d-block mb-4 logo11" /> {/* Bootstrap image classes for alignment */}
@@ -20,6 +23,7 @@ const ProcumentCommittee = () => {
           MPC
         </Link>
       </div>
+    </div>
     </div>
   );
 };

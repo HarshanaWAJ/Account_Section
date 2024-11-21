@@ -1,6 +1,7 @@
 // src/QCProject.js
 import React from 'react';
 import './css/qcProject.css';
+import Sidebar from './SidebarClerk';
 
 const QCproject = ({ projects = [] }) => {
     const handleQuotationCall = (project) => {
@@ -9,6 +10,8 @@ const QCproject = ({ projects = [] }) => {
     };
 
     return (
+        <div className="d-flex">
+        <Sidebar />
         <div className="container">
             <h2 className='header-onprogress'>Onprogress Project List</h2>
                 <table className="table table-striped">
@@ -24,6 +27,7 @@ const QCproject = ({ projects = [] }) => {
                     </thead>
                     
                 </table>
+        </div>
         </div>
     );
 };
