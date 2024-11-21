@@ -34,7 +34,7 @@ public class SupplierController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSuppliers); // Return the list of saved suppliers
     }
 
-    @GetMapping
+    @GetMapping("/get-list")
     public ResponseEntity<List<Supplier>> getSupplierList() {
         try {
             List<Supplier> suppliers = supplierService.getSupplierList(); // Use service for getting suppliers

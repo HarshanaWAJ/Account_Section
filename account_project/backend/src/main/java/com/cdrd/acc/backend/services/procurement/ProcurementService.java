@@ -22,6 +22,8 @@ public class ProcurementService {
 
     @Autowired
     private QuotationCallRepo quotationCallRepo;
+
+
     // Get All Procurement
     public List<Procurement> getProcurementList() {
         try {

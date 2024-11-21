@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './login.css'; // Reuse the styles from login.css
 import './register.css'; // Import the new CSS file
+import axiosInstance from '../axiosInstance'; // Import the axiosInstance
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -24,25 +25,32 @@ const Register = () => {
       const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
       const csrfToken = csrfTokenMeta ? csrfTokenMeta.content : '';
 
-      const response = await fetch('/api/register', {
-        method: 'POST',
+      // Use axiosInstance to make the POST request
+      const response = await axiosInstance.post('/api/register', {
+        name,
+        email,
+        password
+      }, {
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken,
+          'X-CSRF-TOKEN': csrfToken, // Include CSRF token in the headers
         },
-        body: JSON.stringify({ name, email, password }),
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        setErrors(data.errors || ['Registration failed']);
-      } else {
+      // Handle response
+      const data = response.data;
+      if (response.status === 200) {
         setSuccess('Registration successful! You can log in now.');
         // Reset form or redirect as needed
       }
     } catch (error) {
       console.error('Error during registration:', error);
-      setErrors(['An error occurred. Please try again later.']);
+      if (error.response) {
+        // If the error has a response (status 4xx, 5xx)
+        setErrors(error.response.data.errors || ['Registration failed']);
+      } else {
+        // For network errors or other issues
+        setErrors(['An error occurred. Please try again later.']);
+      }
     }
   };
 

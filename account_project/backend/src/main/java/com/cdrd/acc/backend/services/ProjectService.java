@@ -25,6 +25,8 @@ public class ProjectService {
         project.setEstimatedValue(projectDTO.getEstimatedValue());
         project.setStartingDate(projectDTO.getStartingDate());
         project.setEndingDate(projectDTO.getEndingDate());
+        project.setCurrentYear(projectDTO.getCurrentYear().toLocalDate().getYear());
+        project.setExpenditureUpToCurrentYear(projectDTO.getExpenditureUpToCurrentYear());
 
         // Save the project to the repository
         Project savedProject = projectRepo.save(project);

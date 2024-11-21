@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './css/login.css'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import axiosInstance from '../axiosInstance'; // Import the axiosInstance
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,32 +21,49 @@ const Login = () => {
     const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
     const csrfToken = csrfTokenMeta ? csrfTokenMeta.content : ''; // Safely get the CSRF token
 
-    const response = await fetch('http://localhost:8088/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken, 
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await axiosInstance.post('/api/auth/login', {
+        email,
+        password,
+      }, {
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+        },
+      });
 
-    if (!response.ok) {
-      const data = await response.json();
-      setErrors(data.errors || ['Invalid credentials']);
-    } else {
-      const data = await response.json();
+      const data = response.data;
       if (data.statusCode === 500) {
-        alert("Invalid credentials");
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalied Credentials',
+          text: 'PLease try again with valied credentials!',
+          confirmButtonText: 'OK'
+        });
       } else {
+        // Store the token in localStorage upon successful login
+        localStorage.setItem('qmsAuthToken', data.token);
+        localStorage.setItem('qmsAuthRole', data.role);
+
         if (data.role === "ADMIN") {
           navigate('/admin-dashboard'); // Navigate to the admin page
-        }
-        else if (data.role === "CLERK") {
+        } else if (data.role === "CLERK") {
           navigate('/clerk-dashboard');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Not authorized for this action',
+            text: 'You do not have permission to perform this action.',
+            confirmButtonText: 'OK'
+          });
         }
-        else {
-          alert("Not authorized for this action");
-        }
+      }
+    } catch (error) {
+      if (error.response) {
+        // This means the server responded with an error (4xx or 5xx)
+        setErrors(error.response.data.errors || ['Invalid credentials']);
+      } else {
+        // This means there was an issue with the request itself
+        setErrors(['An error occurred, please try again later.']);
       }
     }
   };
