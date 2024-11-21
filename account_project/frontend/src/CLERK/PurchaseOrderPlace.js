@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Col, Row } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/PurchaseOrderPlace.css'; // Import your custom CSS
 import Sidebar from './SidebarClerk';
-
+import axiosInstance from '../axiosInstance';
 
 const PurchaseOrderPlace = () => {
+
+  const [qcNo, setQcNo] = useState('');
+  const [error, setError] = useState('');
+  const [quotationCallId, setQuotationCallId] = useState('');
+  const [supplier, setSupplier] = useState('');
+  const [suppliers, setSuppliers] = useState([]); // List of supplier names
+  const [items, setItems] = useState([]);  // List of selected items
+  const [availableItems, setAvailableItems] = useState([]); // List of items per supplier
   const [formData, setFormData] = useState({
     poReference: '',
     qcNumber: '',
@@ -14,9 +22,67 @@ const PurchaseOrderPlace = () => {
     project: '',
     poValue: '',
     supplier: '',
-    items: '',
+    items: [],
     deliveryDate: '',
   });
+
+  // Fetch the Quotation Call ID when QC Number changes
+  const fetchQCNumberDetails = async (qcNo) => {
+    try {
+      const response = await axiosInstance.get(`/api/quotations/get-by-qc-no/${qcNo}`);
+      const qcDetails = response.data;
+
+      if (qcDetails) {
+        if (qcDetails.exists) {
+          setError('QC Number already exists. Please enter a different QC Number.');
+        } else {
+          setError('QC Number is available.');
+          setQuotationCallId(qcDetails.id);
+        }
+      } else {
+        setError('QC Number not found.');
+        setQuotationCallId('');
+      }
+    } catch (err) {
+      console.error('Error fetching QC number details:', err);
+      setError('Error fetching QC number details. Please try again.');
+      setQuotationCallId('');
+    }
+  };
+
+  const handleQcNoChange = async (e) => {
+    const value = e.target.value;
+    setQcNo(value);
+    if (value) {
+      await fetchQCNumberDetails(value);
+    }
+  };
+
+  // Fetch the supplier list from backend and extract only names
+  const fetchSuppliers = async () => {
+    try {
+      const response = await axiosInstance.get('/api/suppliers/get-list');
+      const supplierNames = response.data.map(supplier => supplier.name); 
+      setSuppliers(supplierNames);  
+    } catch (err) {
+      console.error('Error fetching suppliers:', err);
+    }
+  };
+
+  // Fetch items based on selected supplier
+  const handleSupplierChange = async (e) => {
+    const selectedSupplier = e.target.value;
+    setSupplier(selectedSupplier);
+  };
+
+  const handleItemChange = (e) => {
+    const selectedItem = e.target.value;
+    setItems(prevItems => [...prevItems, selectedItem]);
+  };
+
+  const handleRemoveItem = (itemToRemove) => {
+    setItems(prevItems => prevItems.filter(item => item !== itemToRemove));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,15 +99,21 @@ const PurchaseOrderPlace = () => {
       !formData.project ||
       !formData.poValue ||
       !formData.supplier ||
-      !formData.items ||
+      formData.items.length === 0 ||
       !formData.deliveryDate
     ) {
       alert('Please fill out all fields.');
       return;
     }
+
     console.log('Form submitted successfully:', formData);
     alert('Form submitted successfully!');
   };
+
+  // Fetch suppliers when the component mounts
+  useEffect(() => {
+    fetchSuppliers();
+  }, []);
 
   return (
     <div className="d-flex">
@@ -52,6 +124,11 @@ const PurchaseOrderPlace = () => {
           <h3 className="text">Purchase Order Place</h3>
         </div>
         <div className="card-body">
+          {error && (
+            <div className={`alert ${error.includes('QC Number is available.') ? 'alert-success' : 'alert-danger'}`}>
+              {error}
+            </div>
+          )}
           <Form className="po-form" onSubmit={handleSubmit}>
             <Form.Group controlId="formPOReference" className="mb-3">
               <Form.Label className="form-label">PO Reference</Form.Label>
@@ -69,8 +146,8 @@ const PurchaseOrderPlace = () => {
               <Form.Control
                 type="text"
                 name="qcNumber"
-                value={formData.qcNumber}
-                onChange={handleChange}
+                value={formData.qcNumber || qcNo}
+                onChange={handleQcNoChange}
                 required
               />
             </Form.Group>
@@ -109,17 +186,48 @@ const PurchaseOrderPlace = () => {
               </Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="formProject" className="mb-3">
-              <Form.Label className="form-label">Project</Form.Label>
+            <Form.Group controlId="formSupplier" className="mb-3">
+              <Form.Label className="form-label">Supplier</Form.Label>
               <Form.Control
                 as="select"
-                name="project"
-                value={formData.project}
-                onChange={handleChange}
+                name="supplier"
+                value={formData.supplier}
+                onChange={handleSupplierChange}
                 required
               >
-                <option value="">Select Project</option>
+                <option value="">Select Supplier</option>
+                {suppliers.map((supplier, index) => (
+                  <option key={index} value={supplier}>{supplier}</option>  // Render supplier name
+                ))}
               </Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId="formItems" className="mb-3">
+              <Form.Label className="form-label">Items</Form.Label>
+              <Row>
+                <Col>
+                  <Form.Control
+                    as="select"
+                    multiple
+                    onChange={handleItemChange}
+                    value={items}
+                  >
+                    {availableItems.map((item, index) => (
+                      <option key={index} value={item}>{item}</option>
+                    ))}
+                  </Form.Control>
+                </Col>
+                <Col>
+                  <ul>
+                    {items.map((item, index) => (
+                      <li key={index}>
+                        {item} 
+                        <Button variant="danger" size="sm" onClick={() => handleRemoveItem(item)}>Remove</Button>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+              </Row>
             </Form.Group>
 
             <Form.Group controlId="formPOValue" className="mb-3">
@@ -128,30 +236,6 @@ const PurchaseOrderPlace = () => {
                 type="number"
                 name="poValue"
                 value={formData.poValue}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formSupplier" className="mb-3">
-              <Form.Label className="form-label">Supplier</Form.Label>
-              <Form.Control
-                as="select"
-                name="supplier"
-                value={formData.supplier}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Supplier</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="formItems" className="mb-3">
-              <Form.Label className="form-label">Item/Items</Form.Label>
-              <Form.Control
-                type="text"
-                name="items"
-                value={formData.items}
                 onChange={handleChange}
                 required
               />

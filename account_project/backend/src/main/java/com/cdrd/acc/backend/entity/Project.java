@@ -22,6 +22,20 @@ public class Project {
 
     private String projectType;
 
+    private Date currentYear; // Can be null
+    private Double expenditureUpToCurrentYear; // Can be null
+
     @Column(precision = 25, scale = 2)
     private BigDecimal estimatedValue;
+
+
+    // set current Year
+    public void setCurrentYear(int year) {
+        this.currentYear = Date.valueOf(year+ "-12-31");
+    }
+
+    // function for get current year only
+    public int getCurrentYear() {
+        return this.currentYear.toLocalDate().getYear();
+    }
 }

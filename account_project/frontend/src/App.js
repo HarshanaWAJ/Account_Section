@@ -1,6 +1,6 @@
 // src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Welcome from './LOGIN/welcome'; 
 import Login from './LOGIN/Login';
@@ -25,15 +25,54 @@ import AdvanceReceived from './CLERK/AdvanceReceived';
 import AdvanceSettlement from './CLERK/AdvanceSettlement';
 import PettyCash from './CLERK/PettyCash';
 import ViewDemand from './CLERK/ViewDemand';
+import Swal from 'sweetalert2';
+
 
 const App = () => {
+
+  const [authToken, setAuthToken] = useState(null);
+  const [authRole, setAuthRole] = useState(null);
+
+  console.log("auth Token", authToken);
+  console.log("auth Role", authRole);
+  
+  
+   // Check if the token is in localStorage when the app mounts
+   useEffect(() => {
+    const token = localStorage.getItem('qmsAuthToken');
+    const role = localStorage.getItem('qmsAuthRole');
+    if (token && role) {
+      setAuthToken(token);
+      setAuthRole(role);
+    }
+  }, []);
+
+  // Function for check login status
+  function checkLoginToken() {
+    if (authToken == null) {
+      Navigate('/login')
+      Swal.fire({ 
+        icon: 'warning',
+        title: 'Authentication Error',
+        text: 'You need to Login First!',
+        confirmButtonText: 'OK'
+      })
+    }
+  }
+
+    // PrivateRoute component to protect routes
+    const PrivateRoute = ({ element }) => {
+      checkLoginToken(); // Check if user is authenticated
+      return element;
+    };
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
         
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-dashboard" element={<PrivateRoute element={<AdminDashboard /> } />} />
         <Route path="/admin-dashboard/add-officers" element={<AddOfficer />} />
         <Route path="/admin-dashboard/manage-officers" element={<ManageOfficers />} />
         <Route path="/admin-dashboard/add-projects" element={<AddProjects />} />

@@ -21,4 +21,8 @@ public class ProjectDTO {
     private BigDecimal estimatedValue;
     private Project project;
     private List<Project> projectList;
+
+    private String projectType;
+    private Date currentYear;
+    private Double expenditureUpToCurrentYear;
 }
