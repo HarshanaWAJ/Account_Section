@@ -29,6 +29,7 @@ public class ProcurementBy_DG {
     private String reference;
     private BigDecimal value;
     private int noOfQuotationReceived;
+    private String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quotation_call_id")

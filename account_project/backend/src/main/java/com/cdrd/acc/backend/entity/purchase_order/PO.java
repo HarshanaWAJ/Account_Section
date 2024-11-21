@@ -37,6 +37,7 @@ public class PO {
     @CollectionTable(name = "po_items", joinColumns = @JoinColumn(name = "po_id"))
     @Column(name = "item")
     private List<String> items;
+
     private Date delivaryDate;
 
     // Relationship with QuotationCall

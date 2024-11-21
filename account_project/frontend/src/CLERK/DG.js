@@ -19,6 +19,7 @@ const DG = () => {
   const [currentItem, setCurrentItem] = useState('');
   const [currentQuantity, setCurrentQuantity] = useState('');
   const [error, setError] = useState('');
+  const [remark, setRemark] = useState('');
 
   //Debugging
   console.log("Recieved Number of Quotations: ", noOfQuotationReceived);
@@ -75,7 +76,8 @@ const DG = () => {
         approvedDate,
         status: 'approved',
         quotationCallId: quotationCallId,
-        quotationCall: {id: quotationCallId}
+        quotationCall: {id: quotationCallId},
+        remark: remark
     };
 
 
@@ -359,6 +361,18 @@ const DG = () => {
             <button type="button" className="btn btn-primary mb-3" onClick={addSupplier}>
               Add Supplier
             </button>
+
+            <div className="mb-3">
+              <label className="form-label">Remark</label>
+              <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={(e) => setRemark(e.target.value)}
+                required
+                placeholder="Enter Remark"
+              />
+            </div>
 
             <div className="d-flex justify-content-end">
               <button type="submit" className="btn btn-success w-100">

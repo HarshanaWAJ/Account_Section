@@ -19,7 +19,7 @@ const RPC = () => {
   const [currentQuantity, setCurrentQuantity] = useState('');
   const [quotationCallId, setQuotationCallId] = useState(''); 
   const [error, setError] = useState('');
-
+  const [remark, setRemark] = useState('');
 
   // Fetch the Quotation Call ID when QC Number changes
   const fetchQCNumberDetails = async (qcNo) => {
@@ -70,6 +70,7 @@ const RPC = () => {
         noOfQuotationReceived,  
         approvedBy: 'RPC',
         status: 'approved',
+        remark: remark,
         quotationCall: {id: quotationCallId}
     };
 
@@ -359,6 +360,18 @@ const RPC = () => {
             <button type="button" className="btn btn-primary mb-3" onClick={addSupplier}>
               Add Supplier
             </button>
+
+            <div className="mb-3">
+              <label className="form-label">Remark</label>
+              <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={(e) => setRemark(e.target.value)}
+                required
+                placeholder="Enter Remark"
+              />
+            </div>
 
             <div className="d-flex justify-content-end">
               <button type="submit" className="btn btn-success w-100">

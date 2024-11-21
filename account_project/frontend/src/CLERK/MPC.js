@@ -20,6 +20,7 @@ const MPC = () => {
   const [error, setError] = useState('');
   const [quotationCallId, setQuotationCallId] = useState(''); 
   const navigate = useNavigate();
+  const [remark, setRemark] = useState('');
 
   
   // Fetch the Quotation Call ID when QC Number changes
@@ -71,7 +72,8 @@ const MPC = () => {
           noOfQuotationReceived,  
           approvedBy: 'MPC',
           status: 'approved',
-          quotationCall: {id: quotationCallId}
+          quotationCall: {id: quotationCallId},
+          remark: remark
       };
 
 
@@ -360,6 +362,18 @@ const MPC = () => {
             <button type="button" className="btn btn-primary mb-3" onClick={addSupplier}>
               Add Supplier
             </button>
+            
+            <div className="mb-3">
+              <label className="form-label">Remark</label>
+              <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={(e) => setRemark(e.target.value)}
+                required
+                placeholder="Enter Remark"
+              />
+            </div>
 
             <div className="d-flex justify-content-end">
               <button type="submit" className="btn btn-success w-100">

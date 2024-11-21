@@ -28,6 +28,7 @@ public class ProcurementBy_RPC {
     private String reference;
     private BigDecimal value;
     private int noOfQuotationReceived;
+    private String remark;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "quotation_call_id")
