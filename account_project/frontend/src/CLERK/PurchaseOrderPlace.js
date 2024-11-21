@@ -296,29 +296,34 @@ const PurchaseOrderPlace = () => {
                 >
                   <option value="">Select Supplier</option>
                   {suppliers.map((supplier, index) => (
-                    <option key={index} value={supplier.name}>{supplier.name}</option>
+                    <option key={index} value={supplier.name}>
+                      {supplier.name}
+                    </option>
                   ))}
                 </Form.Control>
               </Form.Group>
 
-             {/* Items */}
-             <Form.Group controlId="formItems" className="mb-3">
+            {/* Items */}
+              <Form.Group controlId="formItems" className="mb-3">
                 <Form.Label className="form-label">Items</Form.Label>
                 <Form.Control
                   as="select"
                   multiple
                   onChange={handleItemChange}
-                  value={items.map(item => item.item)}
+                  value={items.map(item => item.item)} // To manage the selected items
                 >
                   {availableItems && availableItems.length > 0 ? (
                     availableItems.map((item, index) => (
-                      <option key={index} value={item.name}>{item.name}</option>
+                      <option key={index} value={item.name}>
+                        {item.name}
+                      </option>
                     ))
                   ) : (
                     <option disabled>No items available</option>
                   )}
                 </Form.Control>
               </Form.Group>
+
 
               {/* PO Value */}
               <Form.Group controlId="formPOValue" className="mb-3">
