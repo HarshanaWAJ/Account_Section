@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import Sidebar from './SidebarClerk';
 
 const voteMapping = {
   'Traveling Expenses': {
@@ -94,6 +95,8 @@ const AdvanceAdhocRequestForm = () => {
   };
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <Container className="mt-5 d-flex justify-content-center">
       <Card style={{ width: '100%', maxWidth: '600px' }}>
         <Card.Header className="bg-primary text-white">
@@ -229,6 +232,7 @@ const AdvanceAdhocRequestForm = () => {
         </Card.Body>
       </Card>
     </Container>
+    </div>
   );
 };
 

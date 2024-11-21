@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import Swal from 'sweetalert2'; // Import SweetAlert2
 import './css/addofficer.css'; // Import the CSS file
+import Sidebar from './SidebarAdmin';
 
 
 const AddOfficer = () => {
@@ -80,11 +81,16 @@ const AddOfficer = () => {
   };
 
   return (
-    <div className="add-officer">
-      <h2 className="h2">Add Officer</h2>
+    <div className='d-flex'>
+      <Sidebar />
+    <div className="container mt-3 add-officer">
+      <div className="card shadow-lg card003">
+      <div className="card-header001 bg-primary text-white border rounded p-1">
+      <h2 className="text-white mb-4">Add Officer</h2>
+      </div>
       {error && <div className="error">{error}</div>} {/* Display error message */}
       {success && <div className="success">{success}</div>} {/* Display success message */}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
         <div className="form-group">
           <label>Name:</label>
           <input
@@ -139,6 +145,8 @@ const AddOfficer = () => {
         </div>
         <button type="submit">Add Officer</button>
       </form>
+      </div>
+    </div>
     </div>
   );
 };

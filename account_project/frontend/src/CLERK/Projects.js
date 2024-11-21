@@ -4,6 +4,8 @@ import './css/projects.css';
 import axiosInstance from '../axiosInstance';
 import { handleError } from '../utils/errorHandler';
 import Swal from 'sweetalert2'; // Import SweetAlert2
+import Sidebar from './SidebarClerk';
+
 
 const Projects = () => {
   const [formData, setFormData] = useState({
@@ -185,11 +187,16 @@ const Projects = () => {
         });
       });
   };
-
+  
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-4">
-      <h2 className="text-center mb-4">Projects</h2>
-      <form onSubmit={handleSubmit}>
+      <div className="card shadow-lg card003">
+      <div className="card-header001 bg-primary text-white border rounded p-1">
+      <h2 className="text-white mb-4">Projects</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
         <div className="mb-3 input-box1">
           <label htmlFor="referenceNumber" className="form-label">Reference Number</label>
           <input
@@ -249,6 +256,10 @@ const Projects = () => {
             <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
             <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
             <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
+            <option value="Other">Other</option>
+            <option value="Army">Army</option>
+            <option value="Navy">Navy</option>
+            <option value="Air Force">Air Force</option>
           </select>
         </div>
 
@@ -377,6 +388,8 @@ const Projects = () => {
           <button type="submit" className="btn btn-success item-submit">Submit</button>
         </div>
       </form>
+     </div>
+    </div>
     </div>
   );
 };

@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css'; // Ensure Bootstrap Icons are installed
-import './css/sidebarClerk.css'; // Additional custom CSS
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './css/sidebarClerk.css';
 
 const Sidebar = () => {
   const [addDemandsOpen, setAddDemandsOpen] = useState(false);
   const [procurementCommitteeOpen, setProcurementCommitteeOpen] = useState(false);
-  const [cashAdvanceOpen, setCashAdvanceOpen] = useState(false); // New state for Cash Advance submenu
+  const [cashAdvanceOpen, setCashAdvanceOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
 
   const toggleAddDemands = () => setAddDemandsOpen(!addDemandsOpen);
   const toggleProcurementCommittee = () => setProcurementCommitteeOpen(!procurementCommitteeOpen);
-  const toggleCashAdvance = () => setCashAdvanceOpen(!cashAdvanceOpen); // Toggle function for Cash Advance submenu
+  const toggleCashAdvance = () => setCashAdvanceOpen(!cashAdvanceOpen);
+  const toggleView = () => setViewOpen(!viewOpen);
   
   return (
-    <div className="sidebar bg-dark text-white p-4 vh-100 d-flex flex-column align-items-start sticky-top">
-      <h2 className="text-white mb-4">Clerk Portal</h2>
+    <div className="sidebar bg-dark text-white p-4 d-flex flex-column align-items-start sticky-top">
+      <h2 className="text-white mb-2">Clerk Portal</h2>
       <Nav className="flex-column w-100">
         {/* Add Demands */}
         <div>
@@ -36,7 +38,7 @@ const Sidebar = () => {
           </Nav>
         </div>
 
-        {/* Other Links */}
+        {/* Quotation Call */}
         <Nav.Link as={Link} to="/clerk-dashboard/add-quotation-call" className="text-white sidebar-link">
           <i className="bi bi-chat-left-text me-2"></i>Quotation Call
         </Nav.Link>
@@ -87,17 +89,46 @@ const Sidebar = () => {
             <Nav.Link as={Link} to="/clerk-dashboard/adhoc/settlement" className="text-white sidebar-link">
               <i className="bi bi-file-check me-2"></i>Advance Settlement
             </Nav.Link>
-            </Nav>
+          </Nav>
         </div>
 
+        {/* Petty Cash */}
         <Nav.Link as={Link} to="/clerk-dashboard/PettyCash" className="text-white sidebar-link">
           <i className="bi bi-wallet me-2"></i>Petty Cash
         </Nav.Link>
 
-
-        <Nav.Link as={Link} to="/clerk-dashboard/view-demand" className="text-white sidebar-link">
-          <i className="bi bi-card-list me-2"></i>View Demands
-        </Nav.Link>
+        {/* View */}
+        <div>
+          <Nav.Link
+            onClick={toggleView}
+            className="text-white sidebar-link d-flex align-items-center">
+            <i className="bi bi-card-list me-2"></i>View
+          </Nav.Link>
+          <Nav className={`flex-column ps-4 ${viewOpen ? 'show' : 'collapse'}`}>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-demand" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Demand
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-quotation-call" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Quotation Call
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-procurement-committee" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Procurement Committee
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-purchase-order" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Purchase Order
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-ledger-payment" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Ledger & Payment
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-cash-advance-adhoc" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Cash Advanced/Adhoc
+            </Nav.Link>
+            <Nav.Link as={Link} to="/clerk-dashboard/view-petty-cash" className="text-white sidebar-link">
+              <i className="bi bi-eye me-2"></i>View Petty Cash
+            </Nav.Link>
+          </Nav>
+        </div>
+        
       </Nav>
     </div>
   );

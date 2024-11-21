@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import './css/manageOfficers.css'; // Import the CSS file
 import OfficerForm from './EditOfficerForm'; // Import the form component
+import Sidebar from './SidebarAdmin';
+
 
 const ManageOfficers = () => {
   const [officers, setOfficers] = useState([]);
@@ -82,6 +84,8 @@ const ManageOfficers = () => {
   };
 
   return (
+    <div className='d-flex'>
+      <Sidebar />
     <div className="manage-officers container mt-4">
       <h2 className="mb-4">Manage Officers</h2>
       {error && <div className="alert alert-danger">{error}</div>}
@@ -135,6 +139,7 @@ const ManageOfficers = () => {
           </tbody>
         </table>
       )}
+    </div>
     </div>
   );
 };

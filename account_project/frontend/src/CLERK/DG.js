@@ -4,6 +4,7 @@ import './css/dg.css'; // Import the custom CSS
 import axiosInstance from '../axiosInstance';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from './SidebarClerk';
 
 const DG = () => {
   const navigate = useNavigate();
@@ -186,6 +187,8 @@ const DG = () => {
   };
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-5">
       <div className="card shadow-lg card002">
         <div className="card-header bg-primary text-white">
@@ -365,6 +368,7 @@ const DG = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

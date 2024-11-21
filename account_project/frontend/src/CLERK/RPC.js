@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axiosInstance from '../axiosInstance';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from './SidebarClerk';
 
 const RPC = () => {
   const navigate = useNavigate();
@@ -189,6 +190,8 @@ const RPC = () => {
   };
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-5">
       <div className="card shadow-lg card002">
         <div className="card-header bg-primary text-white">
@@ -365,6 +368,7 @@ const RPC = () => {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

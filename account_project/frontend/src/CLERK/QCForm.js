@@ -1,5 +1,6 @@
 // src/QuotationForm.js
 import React, { useState } from 'react';
+import Sidebar from './SidebarClerk';
 
 const QuotationForm = () => {
     const [formData, setFormData] = useState({
@@ -29,6 +30,8 @@ const QuotationForm = () => {
     };
 
     return (
+        <div className="d-flex">
+        <Sidebar />
         <div className="container">
             <h2>Quotation Call Form</h2>
             <form onSubmit={handleSubmit}>
@@ -152,6 +155,7 @@ const QuotationForm = () => {
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
+        </div>
         </div>
     );
 };

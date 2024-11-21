@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Col, Row } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/PurchaseOrderPlace.css'; // Import your custom CSS
+import Sidebar from './SidebarClerk';
 import axiosInstance from '../axiosInstance';
 
 const PurchaseOrderPlace = () => {
@@ -115,6 +116,8 @@ const PurchaseOrderPlace = () => {
   }, []);
 
   return (
+    <div className="d-flex">
+        <Sidebar />
     <div className="container mt-5">
       <div className="card shadow-lg card001">
         <div className="card-header bg-primary text-white">
@@ -257,6 +260,7 @@ const PurchaseOrderPlace = () => {
           </Form>
         </div>
       </div>
+    </div>
     </div>
   );
 };

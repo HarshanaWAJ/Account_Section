@@ -3,14 +3,20 @@ import axios from '../axiosInstance';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import './css/addproject.css';
+import Sidebar from './SidebarAdmin';
+
 
 const AddProject = () => {
   const [projectNo, setProjectNo] = useState('');
   const [projectName, setProjectName] = useState('');
+  const [projectType, setProjectType] = useState('');
   const [wing, setWing] = useState('');
   const [estimatedValue, setEstimatedValue] = useState('');
   const [startingDate, setStartingDate] = useState('');
   const [endingDate, setEndingDate] = useState('');
+  const [currentYear, setCurrentYear] = useState('');
+  const [expenditureUpToCurrentYear, setExpenditureUpToCurrentYear] = useState('');
+  const [projectCategory, setProjectCategory] = useState('new'); // 'new' or 'existing'
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,13 +32,18 @@ const AddProject = () => {
       return;
     }
 
+    // Gather project data for both new and existing projects
     const projectData = {
       projectNo,
       projectName,
+      projectType,
       wing,
       estimatedValue,
       startingDate,
       endingDate,
+      projectCategory,
+      currentYear,
+      expenditureUpToCurrentYear
     };
 
     try {
@@ -50,14 +61,18 @@ const AddProject = () => {
             window.location.href = '/admin-dashboard';
           }
         });
-        
+
         // Reset the form
         setProjectNo('');
         setProjectName('');
+        setProjectType('');
         setWing('');
         setEstimatedValue('');
         setStartingDate('');
         setEndingDate('');
+        setCurrentYear('');
+        setExpenditureUpToCurrentYear('');
+        setProjectCategory('new'); // Reset radio button selection
       }
     } catch (error) {
       console.error('Error adding project:', error);
@@ -72,8 +87,46 @@ const AddProject = () => {
   };
 
   return (
+    <div className='d-flex'>
+      <Sidebar />
     <div className="container mt-3 add-project-form">
-      <h2 className="text-center mb-4 add-project-head">Add Project</h2>
+      <div className="card shadow-lg card003">
+      <div className="card-header001 bg-primary text-white border rounded p-1">
+      <h2 className="text-white mb-4">Add Project</h2>
+      </div>
+
+      {/* Radio Buttons for Project Type */}
+      <div className="form-group mb-3">
+        <div className="form-check form-check-inline">
+          <input
+            type="radio"
+            id="existingProject"
+            name="projectCategory"
+            value="existing"
+            checked={projectCategory === 'existing'}
+            onChange={(e) => setProjectCategory(e.target.value)}
+            className="form-check-input"
+          />
+          <label className="form-check-label" htmlFor="existingProject">
+            Existing Project
+          </label>
+        </div>
+        <div className="form-check form-check-inline">
+          <input
+            type="radio"
+            id="newProject"
+            name="projectCategory"
+            value="new"
+            checked={projectCategory === 'new'}
+            onChange={(e) => setProjectCategory(e.target.value)}
+            className="form-check-input"
+          />
+          <label className="form-check-label" htmlFor="newProject">
+            New Project
+          </label>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="p-4 border rounded shadow-sm">
         <div className="form-group mb-3">
           <label>Project Number</label>
@@ -96,6 +149,16 @@ const AddProject = () => {
           />
         </div>
         <div className="form-group mb-3">
+          <label>Project Type</label>
+          <input
+            type="text"
+            className="form-control"
+            value={projectType}
+            onChange={(e) => setProjectType(e.target.value)}
+            required placeholder='Project Type'
+          />
+        </div>
+        <div className="form-group mb-3">
           <label htmlFor="wing">Wing</label>
           <select
             id="wing"
@@ -115,6 +178,7 @@ const AddProject = () => {
             <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
             <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
             <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div className="form-group mb-3">
@@ -147,8 +211,44 @@ const AddProject = () => {
             required
           />
         </div>
+
+        {/* Fields for Existing Project */}
+          {projectCategory === 'existing' && (
+          <>
+            <div className="form-group mb-3">
+              <label>Current Year</label>
+              <select
+                className="form-control"
+                value={currentYear}
+                onChange={(e) => setCurrentYear(e.target.value)}
+                required
+              >
+                <option value="" disabled>Select Year</option>
+                {Array.from(new Array(30), (x, i) => new Date().getFullYear() - i).map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group mb-3">
+              <label>Expenditure Up to Current Year</label>
+              <input
+                type="number"
+                className="form-control"
+                value={expenditureUpToCurrentYear}
+                onChange={(e) => setExpenditureUpToCurrentYear(e.target.value)}
+                required placeholder='Expenditure Up to Current Year'
+              />
+            </div>
+          </>
+        )}
+
         <button type="submit" className="btn btn-primary w-100">Add Project</button>
       </form>
+      </div>
+    </div>
     </div>
   );
 };
