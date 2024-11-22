@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './css/sidebarClerk.css';
@@ -10,12 +10,19 @@ const Sidebar = () => {
   const [procurementCommitteeOpen, setProcurementCommitteeOpen] = useState(false);
   const [cashAdvanceOpen, setCashAdvanceOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleAddDemands = () => setAddDemandsOpen(!addDemandsOpen);
   const toggleProcurementCommittee = () => setProcurementCommitteeOpen(!procurementCommitteeOpen);
   const toggleCashAdvance = () => setCashAdvanceOpen(!cashAdvanceOpen);
   const toggleView = () => setViewOpen(!viewOpen);
-  
+
+  const handleLogout = () => {
+    // Clear session or authentication tokens if necessary
+    // Redirect to login or home page
+    navigate('/login'); // Replace '/login' with your login route
+  };
+
   return (
     <div className="sidebar bg-dark text-white p-4 d-flex flex-column align-items-start sticky-top">
       <h2 className="text-white mb-2">Clerk Portal</h2>
@@ -76,7 +83,8 @@ const Sidebar = () => {
         <div>
           <Nav.Link
             onClick={toggleCashAdvance}
-            className="text-white sidebar-link d-flex align-items-center">
+            className="text-white sidebar-link d-flex align-items-center"
+          >
             <i className="bi bi-cash-stack me-2"></i>Cash Advance / Ad-hoc
           </Nav.Link>
           <Nav className={`flex-column ps-4 ${cashAdvanceOpen ? 'show' : 'collapse'}`}>
@@ -101,7 +109,8 @@ const Sidebar = () => {
         <div>
           <Nav.Link
             onClick={toggleView}
-            className="text-white sidebar-link d-flex align-items-center">
+            className="text-white sidebar-link d-flex align-items-center"
+          >
             <i className="bi bi-card-list me-2"></i>View
           </Nav.Link>
           <Nav className={`flex-column ps-4 ${viewOpen ? 'show' : 'collapse'}`}>
@@ -128,7 +137,14 @@ const Sidebar = () => {
             </Nav.Link>
           </Nav>
         </div>
-        
+
+        {/* Logout */}
+        <Nav.Link
+          onClick={handleLogout}
+          className="text-white sidebar-link mt-auto d-flex align-items-center"
+        >
+          <i className="bi bi-box-arrow-right me-2"></i>Logout
+        </Nav.Link>
       </Nav>
     </div>
   );

@@ -239,7 +239,7 @@ const QuotationForm = () => {
                                 </label>
                             </div>
                         </fieldset>
-projectDemand
+                        
                         <div className="mb-3">
                             <label htmlFor="demandNo" className="form-label">Demand No.</label>
                             <input
@@ -288,18 +288,44 @@ projectDemand
                                 required
                             />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="vote" className="form-label">Vote</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="vote"
-                                name="vote"
-                                value={formData.vote}
-                                onChange={handleChange}
-                                required
-                            />
+                        
+                        <div className="col-md-6">
+                            <label className="form-label">Vote</label>
+                            <select
+                            className="form-select"
+                            name="voteNo"
+                            value={formData.voteNo}
+                            onChange={handleChange}
+                            required
+                            >
+                            <option value="">Select Vote No.</option>
+                            <option value="1101">1101</option>
+                            <option value="1102">1102</option>
+                            <option value="1201">1201</option>
+                            <option value="1202-009">1202-009</option>
+                            <option value="1202-010">1202-010</option>
+                            <option value="1205">1205</option>
+                            <option value="1301">1301</option>
+                            <option value="1302">1302</option>
+                            <option value="1303">1303</option>
+                            <option value="1401">1401</option>
+                            <option value="1402">1402</option>
+                            <option value="1403">1403</option>
+                            <option value="1404">1404</option>
+                            <option value="1409">1409</option>
+                            <option value="2001">2001</option>
+                            <option value="2002">2002</option>
+                            <option value="2003">2003</option>
+                            <option value="2102">2102</option>
+                            <option value="2103">2103</option>
+                            <option value="2104">2104</option>
+                            <option value="2401">2401</option>
+                            <option value="2507">2507</option>
+                            <option value="2509">2509</option>
+                            {/* Add more vote options here */}
+                            </select>
                         </div>
+                     
 
                         {formData.type === 'projectDemand' && (
                             <>
