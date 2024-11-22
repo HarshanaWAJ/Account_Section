@@ -29,13 +29,4 @@ public class Project {
     private BigDecimal estimatedValue;
 
 
-    // set current Year
-    public void setCurrentYear(int year) {
-        this.currentYear = Date.valueOf(year+ "-12-31");
-    }
-
-    // function for get current year only
-    public int getCurrentYear() {
-        return this.currentYear.toLocalDate().getYear();
-    }
 }

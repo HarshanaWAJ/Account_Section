@@ -35,6 +35,7 @@ public class CashAdvanceController {
         try {
             CashAdvance createdCashAdvance = cashAdvanceService.createCashAdvance(cashAdvance);
             if (createdCashAdvance != null) {
+                cashAdvanceService.updateCashAdvanceStatus(cashAdvance.getSerialNo(), "on progress");
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdCashAdvance);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
