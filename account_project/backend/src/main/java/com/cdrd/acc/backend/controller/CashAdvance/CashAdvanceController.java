@@ -92,4 +92,10 @@ public class CashAdvanceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PutMapping("/update-status")
+    public boolean updateCashAdvanceStatus(@RequestParam String serialNo, @RequestParam String status) {
+        // Call the service to update the status and return the result
+        return cashAdvanceService.updateCashAdvanceStatus(serialNo, status);
+    }
 }

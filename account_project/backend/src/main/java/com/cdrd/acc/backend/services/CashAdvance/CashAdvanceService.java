@@ -70,5 +70,11 @@ public class CashAdvanceService {
         }
     }
 
+    public boolean updateCashAdvanceStatus(String serialNo, String status) {
+        // Calling the repository method to update the status based on serialNo
+        int rowsAffected = cashAdvanceRepo.updateStatusBySerialNo(serialNo, status);
+        // Return true if at least one record was updated, false if no records were affected.
+        return rowsAffected > 0;
+    }
 
 }
