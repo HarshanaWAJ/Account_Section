@@ -25,6 +25,10 @@ import AdvanceReceived from './CLERK/AdvanceReceived';
 import AdvanceSettlement from './CLERK/AdvanceSettlement';
 import PettyCash from './CLERK/PettyCash';
 import ViewDemand from './CLERK/ViewDemand';
+import ViewQuotationCall from './CLERK/viewQuotationCall';
+import ViewProcurementCommittee from './CLERK/viewProcurementcommittee';
+import ViewPurchaseOrder from './CLERK/viewPurchaseOrder';
+import ViewLedger from './CLERK/viewLedger';
 import Swal from 'sweetalert2';
 
 
@@ -93,6 +97,11 @@ const App = () => {
         <Route path="/clerk-dashboard/adhoc/settlement" element={<AdvanceSettlement />} />
         <Route path="/clerk-dashboard/PettyCash" element={<PettyCash />} />
         <Route path="/clerk-dashboard/view-demand" element={<ViewDemand />} />
+        <Route path="/clerk-dashboard/view-quotation-call" element={<ViewQuotationCall />} />
+        <Route path="/clerk-dashboard/view-procurement-committee" element={<ViewProcurementCommittee />} />
+        <Route path="/clerk-dashboard/view-purchase-order" element={<ViewPurchaseOrder />} />
+        <Route path="/clerk-dashboard/view-ledger-payment" element={<ViewLedger />} />
+
 
         <Route path="/accountant-dashboard" element={<AccountantDashboard />} />
       </Routes>
