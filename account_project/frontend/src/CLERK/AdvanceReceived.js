@@ -51,37 +51,28 @@ const AdvanceReceivedForm = () => {
   const [selectedWing, setSelectedWing] = useState('');
   const [selectedVote, setSelectedVote] = useState('');
   const [voteName, setVoteName] = useState('');
+  const [serialNumber, setSerialNumber] = useState('');
 
-  // Example data for serial numbers
-  const serialNumbers = [
-  ];
-
-  // Example data for project numbers related to wings
   const projectNumbers = {
     // Assuming you will fill this with data
   };
 
-  // Create an array of vote numbers
   const voteNumbers = Object.keys(voteMapping).reduce((acc, key) => {
     return [...acc, ...Object.keys(voteMapping[key])];
   }, []);
 
-  // Handle option change
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  // Handle wing change
   const handleWingChange = (e) => {
     setSelectedWing(e.target.value);
   };
 
-  // Handle vote number change
   const handleVoteChange = (e) => {
     const voteNo = e.target.value;
     setSelectedVote(voteNo);
     
-    // Find the corresponding vote name based on selected vote number
     const foundVoteName = Object.entries(voteMapping).reduce((acc, [category, votes]) => {
       if (votes[voteNo]) {
         return votes[voteNo];
@@ -92,148 +83,159 @@ const AdvanceReceivedForm = () => {
     setVoteName(foundVoteName);
   };
 
+  const handleSerialNumberChange = (e) => {
+    setSerialNumber(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form submitted successfully');
+    console.log('Form submitted successfully:', {
+      selectedOption,
+      serialNumber,
+      selectedWing,
+      selectedVote,
+      voteName,
+    });
   };
 
   return (
     <div className="d-flex">
-        <Sidebar />
-    <Container className="mt-5 d-flex justify-content-center">
-      <Card style={{ width: '100%', maxWidth: '600px' }}>
-        <Card.Header className="bg-primary text-white">
-          <h3 className="text">Advance Received Form</h3>
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit}>
-            {/* Radio buttons for selecting option */}
-            <Form.Group className="mb-3">
-              <Form.Label className="fw-bold">Select Option</Form.Label>
-              <div className="d-flex">
-                <Form.Check
-                  type="radio"
-                  label="Project"
-                  name="option"
-                  value="project"
-                  onChange={handleOptionChange}
-                  checked={selectedOption === 'project'}
-                  inline
-                  className="me-3"
-                />
-                <Form.Check
-                  type="radio"
-                  label="Others (MT/Qstor)"
-                  name="option"
-                  value="others"
-                  onChange={handleOptionChange}
-                  checked={selectedOption === 'others'}
-                  inline
-                />
-              </div>
-            </Form.Group>
+      <Sidebar />
+      <Container className="mt-5 d-flex justify-content-center">
+        <Card style={{ width: '100%', maxWidth: '600px' }}>
+          <Card.Header className="bg-primary text-white">
+            <h3 className="text">Advance Received Form</h3>
+          </Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              {/* Radio buttons for selecting option */}
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">Select Option</Form.Label>
+                <div className="d-flex">
+                  <Form.Check
+                    type="radio"
+                    label="Project"
+                    name="option"
+                    value="project"
+                    onChange={handleOptionChange}
+                    checked={selectedOption === 'project'}
+                    inline
+                    className="me-3"
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Others (MT/Qstor)"
+                    name="option"
+                    value="others"
+                    onChange={handleOptionChange}
+                    checked={selectedOption === 'others'}
+                    inline
+                  />
+                </div>
+              </Form.Group>
 
-            {/* Fields for "Project" option */}
-            {selectedOption === 'project' && (
-              <>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Serial No.</Form.Label>
-                  <Form.Select required>
-                    <option value="">Select Serial Number</option>
-                    {serialNumbers.map((serial, idx) => (
-                      <option key={idx} value={serial}>{serial}</option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+              {/* Fields for "Project" option */}
+              {selectedOption === 'project' && (
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Serial No.</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Serial No."
+                      value={serialNumber}
+                      onChange={handleSerialNumberChange}
+                      required
+                    />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Wing</Form.Label>
-                  <Form.Select onChange={handleWingChange} value={selectedWing}>
-                    <option value="">Select Wing</option>
-                    <option value="Aeronautical Wing">Aeronautical Wing</option>
-                    <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
-                    <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
-                    <option value="Cyber Security Wing">Cyber Security Wing</option>
-                    <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
-                    <option value="IT & GIS Wing">IT & GIS Wing</option>
-                    <option value="Marine Wing">Marine Wing</option>
-                    <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
-                    <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
-                    <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
-                  </Form.Select>
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Wing</Form.Label>
+                    <Form.Select onChange={handleWingChange} value={selectedWing}>
+                      <option value="">Select Wing</option>
+                      <option value="Aeronautical Wing">Aeronautical Wing</option>
+                      <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
+                      <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
+                      <option value="Cyber Security Wing">Cyber Security Wing</option>
+                      <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
+                      <option value="IT & GIS Wing">IT & GIS Wing</option>
+                      <option value="Marine Wing">Marine Wing</option>
+                      <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
+                      <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
+                      <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
+                    </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Project No.</Form.Label>
-                  <Form.Select>
-                    <option value="">Select Project No.</option>
-                    {selectedWing && projectNumbers[selectedWing]?.map((proj, idx) => (
-                      <option key={idx} value={proj}>{proj}</option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Project No.</Form.Label>
+                    <Form.Select>
+                      <option value="">Select Project No.</option>
+                      {selectedWing && projectNumbers[selectedWing]?.map((proj, idx) => (
+                        <option key={idx} value={proj}>{proj}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Amount</Form.Label>
-                  <Form.Control type="number" placeholder="Enter amount" required />
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Amount</Form.Label>
+                    <Form.Control type="number" placeholder="Enter amount" required />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Received Date</Form.Label>
-                  <Form.Control type="date" required />
-                </Form.Group>
-              </>
-            )}
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Received Date</Form.Label>
+                    <Form.Control type="date" required />
+                  </Form.Group>
+                </>
+              )}
 
-            {/* Fields for "Others (MT/Qstor)" option */}
-            {selectedOption === 'others' && (
-              <>
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Serial No.</Form.Label>
-                  <Form.Select required>
-                    <option value="">Select Serial Number</option>
-                    {serialNumbers.map((serial, idx) => (
-                      <option key={idx} value={serial}>{serial}</option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+              {/* Fields for "Others (MT/Qstor)" option */}
+              {selectedOption === 'others' && (
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Serial No.</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Serial No."
+                      value={serialNumber}
+                      onChange={handleSerialNumberChange}
+                      required
+                    />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Vote No.</Form.Label>
-                  <Form.Select onChange={handleVoteChange} value={selectedVote} required>
-                    <option value="">Select Vote No.</option>
-                    {voteNumbers.map((vote, idx) => (
-                      <option key={idx} value={vote}>{vote}</option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Vote No.</Form.Label>
+                    <Form.Select onChange={handleVoteChange} value={selectedVote} required>
+                      <option value="">Select Vote No.</option>
+                      {voteNumbers.map((vote, idx) => (
+                        <option key={idx} value={vote}>{vote}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Vote Name</Form.Label>
-                  <Form.Control type="text" value={voteName} readOnly />
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Vote Name</Form.Label>
+                    <Form.Control type="text" value={voteName} readOnly />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Amount</Form.Label>
-                  <Form.Control type="number" placeholder="Enter amount" required />
-                </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Amount</Form.Label>
+                    <Form.Control type="number" placeholder="Enter amount" required />
+                  </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Received Date</Form.Label>
-                  <Form.Control type="date" required />
-                </Form.Group>
-              </>
-            )}
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Received Date</Form.Label>
+                    <Form.Control type="date" required />
+                  </Form.Group>
+                </>
+              )}
 
-            {/* Submit button */}
-            <Button variant="success" type="submit" className="w-100 mt-3">
-              Submit
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+              {/* Submit button */}
+              <Button variant="success" type="submit" className="w-100 mt-3">
+                Submit
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
     </div>
   );
 };
