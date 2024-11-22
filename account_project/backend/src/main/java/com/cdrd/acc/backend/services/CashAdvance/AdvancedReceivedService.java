@@ -2,6 +2,7 @@ package com.cdrd.acc.backend.services.CashAdvance;
 
 import com.cdrd.acc.backend.entity.CashAdvance.AdvanceReceived;
 import com.cdrd.acc.backend.repositories.CashAdvance.AdvanceReceivedRepo;
+import com.cdrd.acc.backend.repositories.CashAdvance.CashAdvanceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +14,13 @@ public class AdvancedReceivedService {
     @Autowired
     private AdvanceReceivedRepo advanceReceivedRepo;
 
+    @Autowired
+    private CashAdvanceRepo cashAdvanceRepo;
+
     // Create a new AdvanceReceived
     public AdvanceReceived createAdvanceReceived(AdvanceReceived advanceReceived) {
         try {
+            cashAdvanceRepo.updateStatusBySerialNo(advanceReceived.getSerialNo(), "advanced received");
             return advanceReceivedRepo.save(advanceReceived);
         } catch (Exception e) {
             e.printStackTrace();

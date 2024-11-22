@@ -26,6 +26,7 @@ public class CashAdvanceService {
 
     public CashAdvance createCashAdvance(CashAdvance cashAdvance) {
         try {
+            cashAdvanceRepo.updateStatusBySerialNo(cashAdvance.getSerialNo(), "on progress");
             return cashAdvanceRepo.save(cashAdvance);
         } catch (Exception e) {
             e.printStackTrace();

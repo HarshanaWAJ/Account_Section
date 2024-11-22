@@ -29,6 +29,7 @@ public class ProjectService {
         project.setExpenditureUpToCurrentYear(projectDTO.getExpenditureUpToCurrentYear());
         project.setProjectType(projectDTO.getProjectType());
 
+
         // Save the project to the repository
         Project savedProject = projectRepo.save(project);
 

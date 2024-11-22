@@ -114,10 +114,12 @@ const AdvanceAdhocRequestForm = () => {
       projectNo,
       amount,
       reason,
-      modSendingDate,
+      modSendDate: modSendingDate,
       voteNo: selectedVote,
       voteName,
     };
+    console.log("S No:", serialNo);
+    
 
     try {
       const response = await axiosInstance.post('/api/cash-advance/create-cash-advance', formData);
@@ -259,66 +261,69 @@ const AdvanceAdhocRequestForm = () => {
                 </>
               )}
 
-              {selectedOption === 'others' && (
-                <>
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Serial No.</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Serial Number"
-                      required
-                    />
-                  </Form.Group>
+                    {selectedOption === 'others' && (
+                      <>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Serial No.</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Serial Number"
+                            value={serialNo}  // Bind serialNo state here
+                            onChange={(e) => setSerialNo(e.target.value)}  // Ensure it updates on change
+                            required
+                          />
+                        </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Vote No.</Form.Label>
-                    <Form.Select onChange={handleVoteChange} value={selectedVote} required>
-                      <option value="">Select Vote No.</option>
-                      {voteNumbers.map((vote, idx) => (
-                        <option key={idx} value={vote}>{vote}</option>
-                      ))}
-                    </Form.Select>
-                  </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Vote No.</Form.Label>
+                          <Form.Select onChange={handleVoteChange} value={selectedVote} required>
+                            <option value="">Select Vote No.</option>
+                            {voteNumbers.map((vote, idx) => (
+                              <option key={idx} value={vote}>{vote}</option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Vote Name</Form.Label>
-                    <Form.Control type="text" value={voteName} readOnly />
-                  </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Vote Name</Form.Label>
+                          <Form.Control type="text" value={voteName} readOnly />
+                        </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Amount</Form.Label>
-                    <Form.Control
-                      type="number"
-                      placeholder="Enter amount"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Amount</Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="Enter amount"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Reason</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      placeholder="Enter reason"
-                      value={reason}
-                      onChange={(e) => setReason(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Reason</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            placeholder="Enter reason"
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
 
-                  <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Date</Form.Label>
-                    <Form.Control
-                      type="date"
-                      value={modSendingDate}
-                      onChange={(e) => setModSendingDate(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-                </>
-              )}
+                        <Form.Group className="mb-3">
+                          <Form.Label className="fw-bold">Date</Form.Label>
+                          <Form.Control
+                            type="date"
+                            value={modSendingDate}
+                            onChange={(e) => setModSendingDate(e.target.value)}
+                            required
+                          />
+                        </Form.Group>
+                      </>
+                    )}
+
 
               <Button variant="primary" type="submit">
                 Submit
