@@ -58,51 +58,43 @@ const AdvanceAdhocRequestForm = () => {
   const [projectNumbers, setProjectNumbers] = useState([]);
   const navigate = useNavigate();
 
-  // Create an array of vote numbers
   const voteNumbers = Object.keys(voteMapping).reduce((acc, key) => {
     return [...acc, ...Object.keys(voteMapping[key])];
   }, []);
 
-  // Form field states
   const [serialNo, setSerialNo] = useState('');
   const [projectNo, setProjectNo] = useState('');
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState('');
   const [modSendingDate, setModSendingDate] = useState('');
 
-  // Handle option change
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  // Handle wing change
   const handleWingChange = async (e) => {
     const wing = e.target.value;
     setSelectedWing(wing);
-    // Fetch project numbers based on selected wing
     if (wing) {
       await fetchProjectNumbers(wing);
     }
   };
 
-  // Fetch project numbers for a specific wing
   const fetchProjectNumbers = async (wing) => {
     try {
       const response = await axiosInstance.get('/api/project/wing', {
         params: { wing },
       });
-      setProjectNumbers(response.data);  // Update the project numbers state
+      setProjectNumbers(response.data);
     } catch (error) {
-      handleError(error);  // Handle any errors that occur
+      handleError(error);
     }
   };
 
-  // Handle vote number change
   const handleVoteChange = (e) => {
     const voteNo = e.target.value;
     setSelectedVote(voteNo);
 
-    // Find the corresponding vote name based on selected vote number
     const foundVoteName = Object.entries(voteMapping).reduce((acc, [category, votes]) => {
       if (votes[voteNo]) {
         return votes[voteNo];
@@ -113,11 +105,9 @@ const AdvanceAdhocRequestForm = () => {
     setVoteName(foundVoteName);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Collect form data
     const formData = {
       serialNo,
       wing: selectedWing,
@@ -127,11 +117,9 @@ const AdvanceAdhocRequestForm = () => {
       modSendingDate,
       voteNo: selectedVote,
       voteName,
-      modSendDate: modSendingDate
     };
 
     try {
-      // Send data to the backend using axios
       const response = await axiosInstance.post('/api/cash-advance/create-cash-advance', formData);
       if (response.status === 201) {
         Swal.fire({
@@ -140,20 +128,17 @@ const AdvanceAdhocRequestForm = () => {
           icon: 'success',
           confirmButtonText: 'OK',
         });
-        console.log("Request submitted successfully:", response.data);
         navigate('/clerk-dashboard');
       } else {
-        // Handle failure
         Swal.fire({
           title: "Failed",
           text: 'Operation Failed',
           icon: 'error',
           confirmButtonText: 'OK',
         });
-        console.log("Error:", response);
       }
     } catch (error) {
-      handleError(error); // Handle any errors that may occur
+      handleError(error);
     }
   };
 
@@ -167,7 +152,6 @@ const AdvanceAdhocRequestForm = () => {
           </Card.Header>
           <Card.Body>
             <Form onSubmit={handleSubmit}>
-              {/* Radio buttons for selecting option */}
               <Form.Group className="mb-3">
                 <Form.Label className="fw-bold">Select Option</Form.Label>
                 <div className="d-flex">
@@ -193,7 +177,6 @@ const AdvanceAdhocRequestForm = () => {
                 </div>
               </Form.Group>
 
-              {/* Fields for "Project" option */}
               {selectedOption === 'project' && (
                 <>
                   <Form.Group className="mb-3">
@@ -208,21 +191,21 @@ const AdvanceAdhocRequestForm = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">Wing</Form.Label>
-                    <Form.Select onChange={handleWingChange} value={selectedWing}>
-                      <option value="">Select Wing</option>
-                      <option value="Aeronautical Wing">Aeronautical Wing</option>
-                      <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
-                      <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
-                      <option value="Cyber Security Wing">Cyber Security Wing</option>
-                      <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
-                      <option value="IT & GIS Wing">IT & GIS Wing</option>
-                      <option value="Marine Wing">Marine Wing</option>
-                      <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
-                      <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
-                      <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
-                    </Form.Select>
-                  </Form.Group>
+                  <Form.Label className="fw-bold">Wing</Form.Label>
+                  <Form.Select onChange={handleWingChange} value={selectedWing}>
+                    <option value="">Select Wing</option>
+                    <option value="Aeronautical Wing">Aeronautical Wing</option>
+                    <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
+                    <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
+                    <option value="Cyber Security Wing">Cyber Security Wing</option>
+                    <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
+                    <option value="IT & GIS Wing">IT & GIS Wing</option>
+                    <option value="Marine Wing">Marine Wing</option>
+                    <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
+                    <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
+                    <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
+                  </Form.Select>
+                </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Project No.</Form.Label>
@@ -265,7 +248,7 @@ const AdvanceAdhocRequestForm = () => {
                   </Form.Group>
 
                   <Form.Group className="mb-3">
-                    <Form.Label className="fw-bold">MOD Sending Date</Form.Label>
+                    <Form.Label className="fw-bold">Date</Form.Label>
                     <Form.Control
                       type="date"
                       value={modSendingDate}
@@ -276,22 +259,70 @@ const AdvanceAdhocRequestForm = () => {
                 </>
               )}
 
-              {/* Fields for "Others" option */}
               {selectedOption === 'others' && (
-                <Form.Group className="mb-3">
-                  <Form.Label className="fw-bold">Vote No.</Form.Label>
-                  <Form.Select onChange={handleVoteChange} value={selectedVote}>
-                    <option value="">Select Vote No.</option>
-                    {voteNumbers.map((voteNo, idx) => (
-                      <option key={idx} value={voteNo}>
-                        {voteMapping[selectedOption][voteNo]}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
+                <>
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Serial No.</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Serial Number"
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Vote No.</Form.Label>
+                    <Form.Select onChange={handleVoteChange} value={selectedVote} required>
+                      <option value="">Select Vote No.</option>
+                      {voteNumbers.map((vote, idx) => (
+                        <option key={idx} value={vote}>{vote}</option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Vote Name</Form.Label>
+                    <Form.Control type="text" value={voteName} readOnly />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Amount</Form.Label>
+                    <Form.Control
+                      type="number"
+                      placeholder="Enter amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Reason</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      placeholder="Enter reason"
+                      value={reason}
+                      onChange={(e) => setReason(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="fw-bold">Date</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={modSendingDate}
+                      onChange={(e) => setModSendingDate(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                </>
               )}
 
-              <Button variant="primary" type="submit">Submit</Button>
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
             </Form>
           </Card.Body>
         </Card>
