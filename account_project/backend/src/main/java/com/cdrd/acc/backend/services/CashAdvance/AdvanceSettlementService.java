@@ -3,6 +3,7 @@ package com.cdrd.acc.backend.services.CashAdvance;
 import com.cdrd.acc.backend.entity.CashAdvance.AdvanceReceived;
 import com.cdrd.acc.backend.entity.CashAdvance.AdvanceSettlement;
 import com.cdrd.acc.backend.repositories.CashAdvance.AdvanceSettlemetRepo;
+import com.cdrd.acc.backend.repositories.CashAdvance.CashAdvanceRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,13 @@ public class AdvanceSettlementService {
     @Autowired
     private AdvanceSettlemetRepo advanceSettlemetRepo;
 
+    @Autowired
+    private CashAdvanceRepo cashAdvanceRepo;
+
     // Create a new AdvanceReceived
     public AdvanceSettlement createAdvanceReceived(AdvanceSettlement advanceSettlement) {
         try {
+            cashAdvanceRepo.updateStatusBySerialNo(advanceSettlement.getSerialNo(), "advanced settled");
             return advanceSettlemetRepo.save(advanceSettlement);
         } catch (Exception e) {
             e.printStackTrace();

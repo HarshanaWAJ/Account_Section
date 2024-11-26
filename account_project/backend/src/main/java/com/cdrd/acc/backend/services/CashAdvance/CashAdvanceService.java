@@ -78,4 +78,12 @@ public class CashAdvanceService {
         return rowsAffected > 0;
     }
 
+    public List<CashAdvance> getCashAdvanceBySerialNo(String serialNo) {
+        try {
+            return cashAdvanceRepo.getCashAdvanceBySerialNo(serialNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

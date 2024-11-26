@@ -99,4 +99,9 @@ public class CashAdvanceController {
         // Call the service to update the status and return the result
         return cashAdvanceService.updateCashAdvanceStatus(serialNo, status);
     }
+
+//    @GetMapping(/"get-request-by-serial-no")
+//    public List<CashAdvance> getCashAdvanceBySerialNo(@RequestParam) {
+//
+//    }
 }

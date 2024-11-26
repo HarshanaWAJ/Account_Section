@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { Form, Button, Card, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import Sidebar from './SidebarClerk';
+import axiosInstance from '../axiosInstance'; // Assuming you have an axios instance
+import Swal from 'sweetalert2'; // To display success/error messages
+
+import { handleError } from '../utils/errorHandler';
 
 const voteMapping = {
   'Traveling Expenses': {
@@ -52,9 +56,20 @@ const AdvanceReceivedForm = () => {
   const [selectedVote, setSelectedVote] = useState('');
   const [voteName, setVoteName] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
+  const [amount, setAmount] = useState('');
+  const [receivedDate, setReceivedDate] = useState('');
+  const [projectNumbers, setProjectNumbers] = useState([]);
+  const [projectNo, setProjectNo] = useState('');
 
-  const projectNumbers = {
-    // Assuming you will fill this with data
+  const fetchProjectNumbers = async (wing) => {
+    try {
+      const response = await axiosInstance.get('/api/project/wing', {
+        params: { wing },
+      });
+      setProjectNumbers(response.data);
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   const voteNumbers = Object.keys(voteMapping).reduce((acc, key) => {
@@ -65,21 +80,24 @@ const AdvanceReceivedForm = () => {
     setSelectedOption(e.target.value);
   };
 
-  const handleWingChange = (e) => {
-    setSelectedWing(e.target.value);
+  const handleWingChange = async (e) => {
+    const wing = e.target.value;
+    setSelectedWing(wing);
+    if (wing) {
+      await fetchProjectNumbers(wing);
+    }
   };
+
 
   const handleVoteChange = (e) => {
     const voteNo = e.target.value;
     setSelectedVote(voteNo);
-    
     const foundVoteName = Object.entries(voteMapping).reduce((acc, [category, votes]) => {
       if (votes[voteNo]) {
         return votes[voteNo];
       }
       return acc;
     }, '');
-
     setVoteName(foundVoteName);
   };
 
@@ -87,15 +105,54 @@ const AdvanceReceivedForm = () => {
     setSerialNumber(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleAmountChange = (e) => {
+    setAmount(e.target.value);
+  };
+
+  const handleReceivedDateChange = (e) => {
+    setReceivedDate(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted successfully:', {
+
+    const formData = {
       selectedOption,
-      serialNumber,
-      selectedWing,
-      selectedVote,
-      voteName,
-    });
+      serialNo: serialNumber,
+      wingOrVote: selectedWing,
+      wingOrVote: selectedVote,
+      projectOrVote: voteName,
+      projectOrVote: projectNo,
+      amount,
+      recievedDate: receivedDate,
+    };
+
+    try {
+      const response = await axiosInstance.post('/api/advance-received/create-advance-received', formData);
+      if (response.status === 201) {
+        Swal.fire({
+          title: 'Success',
+          text: 'Advance Received Submitted Successfully',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+      } else {
+        Swal.fire({
+          title: 'Failed',
+          text: 'Operation Failed',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'An error occurred while submitting the form.',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
   };
 
   return (
@@ -151,38 +208,44 @@ const AdvanceReceivedForm = () => {
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Wing</Form.Label>
                     <Form.Select onChange={handleWingChange} value={selectedWing}>
-                      <option value="">Select Wing</option>
-                      <option value="Aeronautical Wing">Aeronautical Wing</option>
-                      <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
-                      <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
-                      <option value="Cyber Security Wing">Cyber Security Wing</option>
-                      <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
-                      <option value="IT & GIS Wing">IT & GIS Wing</option>
-                      <option value="Marine Wing">Marine Wing</option>
-                      <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
-                      <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
-                      <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
+                    <option value="">Select Wing</option>
+                    <option value="Aeronautical Wing">Aeronautical Wing</option>
+                    <option value="Ammo & Explosive Wing">Ammo & Explosive Wing</option>
+                    <option value="Armament & Ballistics Wing">Armament & Ballistics Wing</option>
+                    <option value="Cyber Security Wing">Cyber Security Wing</option>
+                    <option value="Electrical & Mechanical Wing">Electrical & Mechanical Wing</option>
+                    <option value="IT & GIS Wing">IT & GIS Wing</option>
+                    <option value="Marine Wing">Marine Wing</option>
+                    <option value="Nano and Modern Technology Wing">Nano and Modern Technology Wing</option>
+                    <option value="Radio & Electronic Wing">Radio & Electronic Wing</option>
+                    <option value="Satellite & Surveillance Wing">Satellite & Surveillance Wing</option>
                     </Form.Select>
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Project No.</Form.Label>
-                    <Form.Select>
+                    <Form.Select
+                      value={projectNo}
+                      onChange={(e) => setProjectNo(e.target.value)}
+                    >
                       <option value="">Select Project No.</option>
-                      {selectedWing && projectNumbers[selectedWing]?.map((proj, idx) => (
-                        <option key={idx} value={proj}>{proj}</option>
-                      ))}
+                      {projectNumbers && projectNumbers.length > 0 ? (
+                        projectNumbers.map((proj, idx) => (
+                          <option key={idx} value={proj.projectNo}>{proj.projectNo}</option>
+                        ))
+                      ) : (
+                        <option value="">No projects available</option>
+                      )}
                     </Form.Select>
                   </Form.Group>
-
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Amount</Form.Label>
-                    <Form.Control type="number" placeholder="Enter amount" required />
+                    <Form.Control type="number" placeholder="Enter amount" value={amount} onChange={handleAmountChange} required />
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Received Date</Form.Label>
-                    <Form.Control type="date" required />
+                    <Form.Control type="date" value={receivedDate} onChange={handleReceivedDateChange} required />
                   </Form.Group>
                 </>
               )}
@@ -218,12 +281,12 @@ const AdvanceReceivedForm = () => {
 
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Amount</Form.Label>
-                    <Form.Control type="number" placeholder="Enter amount" required />
+                    <Form.Control type="number" placeholder="Enter amount" value={amount} onChange={handleAmountChange} required />
                   </Form.Group>
 
                   <Form.Group className="mb-3">
                     <Form.Label className="fw-bold">Received Date</Form.Label>
-                    <Form.Control type="date" required />
+                    <Form.Control type="date" value={receivedDate} onChange={handleReceivedDateChange} required />
                   </Form.Group>
                 </>
               )}

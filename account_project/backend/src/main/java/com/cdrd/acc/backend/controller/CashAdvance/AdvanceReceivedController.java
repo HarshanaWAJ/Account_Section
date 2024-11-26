@@ -1,7 +1,10 @@
 package com.cdrd.acc.backend.controller.CashAdvance;
 
 import com.cdrd.acc.backend.entity.CashAdvance.AdvanceReceived;
+import com.cdrd.acc.backend.entity.CashAdvance.CashAdvance;
 import com.cdrd.acc.backend.services.CashAdvance.AdvancedReceivedService;
+import com.cdrd.acc.backend.services.CashAdvance.CashAdvanceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +15,11 @@ import java.util.List;
 @RequestMapping("/api/advance-received")
 public class AdvanceReceivedController {
 
+    @Autowired
     private AdvancedReceivedService advancedReceivedService;
+    @Autowired
+    private CashAdvanceService cashAdvanceService;
+
 
     @GetMapping("/get-all-cash-advance")
     public ResponseEntity<List<AdvanceReceived>> getAllCashAdvance() {
