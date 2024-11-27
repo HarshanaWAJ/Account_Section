@@ -1,6 +1,7 @@
 package com.cdrd.acc.backend.controller.purchase_order;
 
 import com.cdrd.acc.backend.entity.purchase_order.PO;
+import com.cdrd.acc.backend.services.Demand.DemandService;
 import com.cdrd.acc.backend.services.purchase_order.PO_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ public class PO_Controller {
 
     @Autowired
     private PO_Service purchaseOrderService;
+    private DemandService demandService;
 
     @GetMapping("/get/all-list")
     public ResponseEntity<List<PO>> getAllPurchaseOrders() {
@@ -33,11 +35,12 @@ public class PO_Controller {
         if (purchaseOrder == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Return 400 Bad Request if input is null
         }
-
         try {
-            Optional<PO> savedPurchaseOrderOpt = purchaseOrderService.addPurchaseOrder(purchaseOrder);
 
+            Optional<PO> savedPurchaseOrderOpt = purchaseOrderService.addPurchaseOrder(purchaseOrder);
+            int demand_id =  purchaseOrder.getQuotationCall().getDemand().getId();
             if (savedPurchaseOrderOpt.isPresent()) {
+                demandService.updateDemandStatus(demand_id, "Purchase Order Placed");
                 return ResponseEntity.status(HttpStatus.CREATED).body(savedPurchaseOrderOpt.get()); // Return 201 Created
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Return 400 Bad Request if the order could not be saved

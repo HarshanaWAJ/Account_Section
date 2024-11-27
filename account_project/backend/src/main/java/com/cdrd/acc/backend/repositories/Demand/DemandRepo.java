@@ -39,5 +39,12 @@ public interface DemandRepo extends JpaRepository<Demand, Integer> {
     @Query("SELECT d FROM Demand d WHERE d.status = 'on progress' AND d.demandNo = ?1")
     Optional<Demand> findDemandByNumberAndStatus(String demandNo);
 
+    @Query("SELECT COUNT(d) FROM Demand d WHERE d.status = 'on progress'")
+    Integer getOnProgressDemandCount();
 
+    @Query("SELECT COUNT(d) FROM Demand d WHERE d.status = 'Procurement Committed'")
+    Integer getProcrumentComittedDemandCount();
+
+    @Query("SELECT COUNT(d) FROM Demand d WHERE d.status = 'quotation called'")
+    Integer getQuotationCalledDemandCount();
 }

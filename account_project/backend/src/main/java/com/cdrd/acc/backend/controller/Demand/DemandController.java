@@ -185,4 +185,48 @@ public class DemandController {
         }
     }
 
+    @GetMapping("/get-project-demand-count")
+    public ResponseEntity<Integer> getProjectDemandCount() {
+        try {
+            Integer projectDemandCount = demandService.getProjectDemandCount();
+            return ResponseEntity.ok(projectDemandCount);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+    }
+
+    @GetMapping("/get-on-progress-demand-count")
+    public ResponseEntity<Integer> getOnProgressDemandCount() {
+        try {
+            Integer onProgressDemandCount = demandService.getOnProgressDemandCount();
+            return ResponseEntity.ok(onProgressDemandCount);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+    }
+
+    @GetMapping("/get-procrument-comitted-demand-count")
+    public ResponseEntity<Integer> getProcrumentComittedCount() {
+        try {
+            Integer procrumentComittedCount = demandService.getProcrumentComittedCount();
+            return ResponseEntity.ok(procrumentComittedCount);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+    }
+
+    @GetMapping("/get-quotation-called-demand-count")
+    public ResponseEntity<Integer> getQuotationCalledDemandCount() {
+        try {
+            Integer quotationCalledCount = demandService.getQuotationCalledCount();
+            return ResponseEntity.ok(quotationCalledCount);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+    }
+
 }

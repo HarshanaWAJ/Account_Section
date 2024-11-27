@@ -186,4 +186,41 @@ public class DemandService {
             return null;
         }
     }
+
+    // Geth Project Demand Count
+    public Integer getProjectDemandCount() {
+        try {
+            return projectDemandRepo.getProjectDemandCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Integer getOnProgressDemandCount() {
+        try {
+            return demandRepo.getOnProgressDemandCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Integer getProcrumentComittedCount() {
+        try {
+            return demandRepo.getProcrumentComittedDemandCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Integer getQuotationCalledCount() {
+        try {
+            return demandRepo.getQuotationCalledDemandCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
