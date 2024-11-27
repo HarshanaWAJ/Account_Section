@@ -14,4 +14,7 @@ public interface ProjectRepo extends JpaRepository<Project, Integer> {
     @Query("SELECT p FROM Project p WHERE p.projectNo = ?1")
     Project getProjectByProjectNo(String projectNo);
 
+    @Query("SELECT COUNT(p) FROM Project p")
+    Integer getProjectCount();
+
 }

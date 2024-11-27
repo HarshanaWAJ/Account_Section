@@ -176,4 +176,14 @@ public class DemandService {
             return Optional.empty(); // Return an empty Optional in case of an error
         }
     }
+
+    // Geth Other Demand Count
+    public Integer getOtherDemandCount() {
+        try {
+            return otherDemandRepo.getOtherDemandCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

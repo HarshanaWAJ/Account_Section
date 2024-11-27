@@ -151,4 +151,13 @@ public class ProjectService {
         dto.setWing(project.getWing());
         return dto;
     }
+
+    public Integer getProjectCount() {
+        try {
+            return projectRepo.getProjectCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+     }
 }

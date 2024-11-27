@@ -1,51 +1,68 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './SidebarClerk';
-
+import axiosInstance from '../axiosInstance';  // Import your custom axiosInstance
 
 const PettyCashForm = () => {
-    const [formData, setFormData] = useState({
-      voteName: '',
-      voteNo: '',
-      amount: '',
-      reason: '',
-      date: ''
+  const [formData, setFormData] = useState({
+    voteName: '',
+    voteNo: '',
+    amount: '',
+    reason: '',
+    date: ''
+  });
+
+  const voteOptions = {
+    "Building": "1303",
+    "Refreshments": "1409",
+    "Highway": "1101",
+    "Admin": "1205",
+    "Vehicles": "1301"
+  };
+
+  const handleVoteNameChange = (e) => {
+    const selectedVoteName = e.target.value;
+    setFormData({
+      ...formData,
+      voteName: selectedVoteName,
+      voteNo: voteOptions[selectedVoteName] || ''
     });
-  
-    const voteOptions = {
-      "Building": "1303",
-      "Refreshments": "1409",
-      "Highway": "1101",
-      "Admin": "1205",
-      "Vehicles": "1301"
-    };
-  
-    const handleVoteNameChange = (e) => {
-      const selectedVoteName = e.target.value;
-      setFormData({
-        ...formData,
-        voteName: selectedVoteName,
-        voteNo: voteOptions[selectedVoteName] || ''
-      });
-    };
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({
-        ...formData,
-        [name]: value
-      });
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log("Submitted Data:", formData);
-      // Add your submit logic here
-    };
-  
-    return (
-      <div className="d-flex">
-        <Sidebar />
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Send data to the server using axiosInstance
+      const response = await axiosInstance.post('/api/petty-cash/create', formData);
+
+      if (response.status === 200) {
+        alert('Form submitted successfully');
+        // Optionally, reset the form after successful submission
+        setFormData({
+          voteName: '',
+          voteNo: '',
+          amount: '',
+          reason: '',
+          date: ''
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('An error occurred while submitting the form.');
+    }
+  };
+
+  return (
+    <div className="d-flex">
+      <Sidebar />
       <div className="container mt-5">
         <div className="row justify-content-center">
           <div className="col-md-6 col-lg-4">
@@ -72,7 +89,7 @@ const PettyCashForm = () => {
                       ))}
                     </select>
                   </div>
-  
+
                   <div className="mb-3">
                     <label className="form-label">Vote No:</label>
                     <input
@@ -83,7 +100,7 @@ const PettyCashForm = () => {
                       readOnly
                     />
                   </div>
-  
+
                   <div className="mb-3">
                     <label className="form-label">Amount:</label>
                     <input
@@ -95,7 +112,7 @@ const PettyCashForm = () => {
                       required
                     />
                   </div>
-  
+
                   <div className="mb-3">
                     <label className="form-label">Reason:</label>
                     <input
@@ -107,7 +124,7 @@ const PettyCashForm = () => {
                       required
                     />
                   </div>
-  
+
                   <div className="mb-3">
                     <label className="form-label">Date:</label>
                     <input
@@ -119,7 +136,7 @@ const PettyCashForm = () => {
                       required
                     />
                   </div>
-  
+
                   <div className="d-flex justify-content-end">
                     <button type="submit" className="btn btn-success w-100">
                       Submit
@@ -131,8 +148,8 @@ const PettyCashForm = () => {
           </div>
         </div>
       </div>
-      </div>
-    );
-  };
-  
+    </div>
+  );
+};
+
 export default PettyCashForm;

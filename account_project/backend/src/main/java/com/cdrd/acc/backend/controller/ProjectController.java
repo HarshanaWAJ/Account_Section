@@ -79,4 +79,19 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("api/project/get-count")
+    public ResponseEntity<Integer> getProjectCount() {
+        try {
+            Integer projectCount = projectService.getProjectCount();
+            if (projectCount == 0) {
+                return ResponseEntity.ok(0);
+            } else {
+                return ResponseEntity.ok(projectCount);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

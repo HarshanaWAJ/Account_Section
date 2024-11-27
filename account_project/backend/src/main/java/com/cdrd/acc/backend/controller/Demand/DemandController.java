@@ -173,8 +173,16 @@ public class DemandController {
         }
     }
 
-
-
-
+    // Get Other Demand Count
+    @GetMapping("/get-other-demand-count")
+    public ResponseEntity<Integer> getOtherDemandCount() {
+        try {
+            Integer otherDemandCount = demandService.getOtherDemandCount();
+            return ResponseEntity.ok(otherDemandCount);
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+    }
 
 }

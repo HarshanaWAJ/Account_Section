@@ -48,7 +48,10 @@ const Login = () => {
           navigate('/admin-dashboard'); // Navigate to the admin page
         } else if (data.role === "CLERK") {
           navigate('/clerk-dashboard');
-        } else {
+        } else if (data.role === "ACCOUNT OFFICER") {
+          navigate('/accountant-dashboard')
+        }
+        else {
           Swal.fire({
             icon: 'error',
             title: 'Not authorized for this action',
