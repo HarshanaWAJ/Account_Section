@@ -135,6 +135,9 @@ const AdvanceReceivedForm = () => {
           text: 'Advance Received Submitted Successfully',
           icon: 'success',
           confirmButtonText: 'OK',
+        }).then(() => {
+          // Redirect to clerk dashboard after success
+          window.location.href = "/clerk-dashboard";  // Adjust the URL according to your routing setup
         });
       } else {
         Swal.fire({

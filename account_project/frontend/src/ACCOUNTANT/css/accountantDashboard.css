@@ -64,33 +64,143 @@
   .card-container-acc-dashboard {
     display: flex;
     flex-wrap: wrap;
-    gap: 2px;
+    gap: 10px; /* Adjust the space between cards */
+    justify-content: space-between;
   }
   
   .card-acc-dashboard {
-    width: 100%;
-    max-width: 150px;
+    width: calc(33% - 20px); /* Adjust card width to fit 3 cards per row with a gap */
+    max-width: 150px; /* Maximum width to control layout */
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    justify-content: space-between; /* Space out the content evenly */
+    min-height: 200px; /* Ensure the cards have the same height */
+    padding: 10px; /* Add padding inside the card */
+    height: 220px;
   }
   
   .card-acc-dashboard:hover {
-    transform: scale(1.05);
+    transform: scale(1.07);
   }
   
   .card-acc-dashboard h3 {
     font-size: 1.2rem;
-    margin: 10px 0;
+    margin: 5px 0;
+    flex-grow: 0; /* Prevent this from expanding */
   }
   
   .card-acc-dashboard p {
     font-size: 1.5rem;
+    margin: 5px 0;
+    font-weight: 500;
     color: #333;
+    flex-grow: 1; /* Allow this to take up the remaining space */
   }
   
   .card-acc-dashboard .mb-3 {
     margin-bottom: 15px;
   }
   
+  /* Optional: Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .card-acc-dashboard {
+      width: calc(50% - 20px); /* Two cards per row on medium screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card-acc-dashboard {
+      width: 100%; /* One card per row on small screens */
+    }
+  }
+  
+
+  /* Container for the table */
+.wing-wise-project-count {
+  margin-top: 30px;
+}
+
+/* Styling the table */
+.wing-project-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Table header styling */
+.wing-project-table thead {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+/* Table header and data cell styling */
+.wing-project-table th, .wing-project-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Table row hover effect */
+.wing-project-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Table cell alignment */
+.wing-project-table td {
+  text-align: center;
+}
+
+/* Container for the Wing Wise Project Count Section */
+.wing-wise-project-count {
+  margin-top: 40px;  /* Add space between sections */
+  padding: 20px;     /* Padding for better spacing */
+  background-color: #f9f9f9; /* Light background color for the section */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+}
+
+/* Title styling */
+.wing-wise-project-count h4 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;  /* Dark text color */
+  margin-bottom: 20px; /* Spacing below the title */
+  text-align: center; /* Center align the title */
+}
+
+/* Container for the Bar chart */
+.chart-container {
+  width: 100%;
+  height: 400px; /* Fixed height for the chart */
+  position: relative; /* Ensure proper positioning of chart */
+}
+
+/* Loading text style */
+.wing-wise-project-count p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #888;  /* Light gray color for loading text */
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* Optional: Add some responsiveness for mobile screens */
+@media (max-width: 768px) {
+  .wing-wise-project-count {
+    padding: 15px;  /* Less padding on smaller screens */
+  }
+
+  .wing-wise-project-count h4 {
+    font-size: 1.2rem; /* Slightly smaller title font */
+  }
+
+  .chart-container {
+    height: 300px;  /* Adjust chart height on mobile */
+  }
+}
+

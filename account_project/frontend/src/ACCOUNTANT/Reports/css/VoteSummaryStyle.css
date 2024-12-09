@@ -1,0 +1,90 @@
+/* Correct the vote-summary-container layout */
+.vote-summary-container {
+    display: flex; /* Corrected from 'flexbox' to 'flex' */
+    flex-direction: column; /* Stack sidebar and content vertically */
+    flex-grow: 1;
+    padding: 20px; /* Ensure there is space around the content */
+}
+
+/* Header styling */
+.vote-summary-container h4 {
+    margin: 10px 0;
+    font-size: 1.75rem; /* Larger font for headings */
+}
+
+/* Card for the table */
+.vote-summary-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+/* Table body card styling */
+.vote-summary-card-body {
+    margin: 10px;
+    display: flex;
+    flex-direction: column; /* Ensures the content stacks vertically */
+    overflow: auto;
+    padding: 20px; /* Added padding to prevent elements from sticking to the edges */
+}
+
+/* Ensuring the table is responsive */
+.table-responsive {
+    overflow-x: auto; /* Allows horizontal scrolling */
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px; /* Adds space between the table and content above */
+}
+
+/* Make buttons and layout more consistent */
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+/* Export buttons */
+.export-buttons {
+    display: flex;
+    gap: 10px; /* Adds spacing between the buttons */
+    margin-top: 20px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .vote-summary-container {
+        padding: 10px; /* Smaller padding on mobile */
+    }
+
+    .vote-summary-container h4 {
+        font-size: 1.5rem; /* Smaller font size for the header */
+    }
+
+    .vote-summary-card-body {
+        padding: 10px; /* Less padding on mobile to save space */
+    }
+
+    .table-responsive {
+        margin-top: 15px; /* Less margin on smaller screens */
+    }
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .vote-summary-container {
+        padding: 15px; /* Adjust padding on tablets */
+    }
+
+    .vote-summary-card-body {
+        padding: 15px; /* Padding adjustments for tablets */
+    }
+
+    /* Optional: You can adjust table font sizes or layout further */
+    .table thead th {
+        font-size: 0.9rem; /* Smaller font size for header */
+    }
+
+    .table tbody td {
+        font-size: 0.85rem; /* Smaller font size for data */
+    }
+}

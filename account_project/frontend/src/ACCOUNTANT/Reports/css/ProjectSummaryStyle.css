@@ -1,0 +1,38 @@
+/* Ensure the vote-summary-container uses the available space */
+.project-summary-container {
+    flex-grow: 1;
+    padding: 10px;
+    max-width: 80%; /* Ensures container fits the available screen */
+  }
+  
+  /* Ensure the table takes the full width on smaller screens */
+  .table-responsive {
+    max-width: 100%;
+    overflow-x: auto; /* Enables horizontal scrolling if the table overflows */
+  }
+  
+  /* For small screen devices, use the entire width of the screen */
+  @media (max-width: 768px) {
+    .project-summary-container {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+  
+  /* Optional: Add more customizations based on your design */
+  .header h4 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Card styling */
+  .project-summary-card {
+    border-radius: 10px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-summary-card-body {
+    background-color: #ffffff;
+    padding: 10px;
+  }
+  

@@ -23,8 +23,6 @@ const DG = () => {
 
   //Debugging
   console.log("Recieved Number of Quotations: ", noOfQuotationReceived);
-  
-  
 
   // Fetch the Quotation Call ID when QC Number changes
   const fetchQCNumberDetails = async (qcNo) => {

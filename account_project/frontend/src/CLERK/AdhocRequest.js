@@ -129,8 +129,10 @@ const AdvanceAdhocRequestForm = () => {
           text: 'Adhoc Request Submitted Successfully',
           icon: 'success',
           confirmButtonText: 'OK',
+        }).then(() => {
+          // Redirect to clerk dashboard after success
+          window.location.href = "/clerk-dashboard";  // Adjust the URL according to your routing setup
         });
-        navigate('/clerk-dashboard');
       } else {
         Swal.fire({
           title: "Failed",

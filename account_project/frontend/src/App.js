@@ -30,6 +30,8 @@ import ViewProcurementCommittee from './CLERK/viewProcurementcommittee';
 import ViewPurchaseOrder from './CLERK/viewPurchaseOrder';
 import ViewLedger from './CLERK/viewLedger';
 import Swal from 'sweetalert2';
+import VoteSummary from './ACCOUNTANT/Reports/VoteSummary';
+import ProjectSummary from './ACCOUNTANT/Reports/ProjectSummary';
 
 
 const App = () => {
@@ -104,6 +106,11 @@ const App = () => {
 
 
         <Route path="/accountant-dashboard" element={<AccountantDashboard />} />
+
+        {/* Routes for Reports */}
+        <Route path="/accountant-dashboard/vote-summary" element={<VoteSummary />} />
+        <Route path="/accountant-dashboard/project-summary" element={<ProjectSummary />} />
+
       </Routes>
     </Router>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Sidebar from './SidebarClerk';
 import axiosInstance from '../axiosInstance';  // Import your custom axiosInstance
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const PettyCashForm = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const PettyCashForm = () => {
     "Admin": "1205",
     "Vehicles": "1301"
   };
+
 
   const handleVoteNameChange = (e) => {
     const selectedVoteName = e.target.value;
@@ -43,8 +45,15 @@ const PettyCashForm = () => {
       // Send data to the server using axiosInstance
       const response = await axiosInstance.post('/api/petty-cash/create', formData);
 
-      if (response.status === 200) {
-        alert('Form submitted successfully');
+      if (response.status === 201) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Form submitted successfully.',
+        }).then(() => {
+          // Redirect to clerk dashboard after success
+          window.location.href = "/clerk-dashboard";  // Adjust the URL according to your routing setup
+        });
         // Optionally, reset the form after successful submission
         setFormData({
           voteName: '',
@@ -56,7 +65,12 @@ const PettyCashForm = () => {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      alert('An error occurred while submitting the form.');
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while submitting the form. Please try again.",
+        icon: "error",
+        confirmButtonText: "OK"
+      });
     }
   };
 
