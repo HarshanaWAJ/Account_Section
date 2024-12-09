@@ -229,4 +229,59 @@ public class DemandController {
         }
     }
 
+    @GetMapping("/project-demand-count-by-wing")
+    public List<Object[]> getProjectDemandCountByWingWise() {
+        try {
+            // Call the service method to get the count data
+            return demandService.getProjectDemandCountByWingWise();
+        } catch (Exception e) {
+            // Handle the exception and return an error response if needed
+            e.printStackTrace();
+            return null;  // Or return an appropriate error response
+        }
+    }
+
+    @GetMapping("/other-demand-count-by-wing")
+    public List<Object[]> getOtherDemandCountByWingWise() {
+        try {
+            // Call the service method to get the count data
+            return demandService.getOtherDemandCountByWingWise();
+        } catch (Exception e) {
+            // Handle the exception and return an error response if needed
+            e.printStackTrace();
+            return null;  // Or return an appropriate error response
+        }
+    }
+
+    @GetMapping("/other-demand-summary")
+    public String getOtherDemandAsJson() {
+        try {
+            return demandService.getOtherDemandDetailsAsJson();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/project-demand-summary")
+    public String getProjectDemandAsJson() {
+        try {
+            return demandService.getProjectDemandDetailsAsJson();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("update-status-by-qc-no")
+    public String updateDemandStatusByQCNo(@RequestBody String qcNo) {
+        try {
+            demandService.updateDemandStatusByQCNo(qcNo);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

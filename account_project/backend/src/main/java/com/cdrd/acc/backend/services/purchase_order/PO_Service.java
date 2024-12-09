@@ -29,15 +29,8 @@ public class PO_Service {
     }
 
     public Optional<PO> addPurchaseOrder(PO purchaseOrder) {
-        if (purchaseOrder == null || purchaseOrder.getQuotationCall() == null ||
-                purchaseOrder.getQuotationCall().getDemand() == null) {
-            throw new IllegalArgumentException("Invalid purchase order or related entities.");
-        }
-
         try {
             PO savedPurchaseOrder = poRepo.save(purchaseOrder);
-            demandRepo.updateStatusById("Purchase Order Placed",
-                    purchaseOrder.getQuotationCall().getDemand().getId());
             return Optional.of(savedPurchaseOrder); // Return saved purchase order wrapped in Optional
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +80,15 @@ public class PO_Service {
         } catch (Exception e) {
             e.printStackTrace();
             return false; // Return false in case of an error
+        }
+    }
+
+    public List<PO> getPurchaseOrderListByPONo(String poNo) {
+        try {
+            return poRepo.getPurchaseOrderListByQCNo(poNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

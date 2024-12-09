@@ -160,4 +160,13 @@ public class ProjectService {
             return null;
         }
      }
+
+     public List<Object[]> getProjectCountGroupByWing() {
+        try {
+            return projectRepo.countProjectsByWing();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+     }
 }

@@ -24,4 +24,7 @@ public interface QuotationCallRepo extends JpaRepository<QuotationCall, Integer>
 
     @Query("SELECT d FROM Project d WHERE d.projectNo = ?1")
     Project getProjectName(String projectNo);
+
+
+
 }

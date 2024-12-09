@@ -36,11 +36,10 @@ public class PO_Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Return 400 Bad Request if input is null
         }
         try {
-
             Optional<PO> savedPurchaseOrderOpt = purchaseOrderService.addPurchaseOrder(purchaseOrder);
-            int demand_id =  purchaseOrder.getQuotationCall().getDemand().getId();
+
             if (savedPurchaseOrderOpt.isPresent()) {
-                demandService.updateDemandStatus(demand_id, "Purchase Order Placed");
+               // demandService.updateDemandStatus(demand_id, "Purchase Order Placed");
                 return ResponseEntity.status(HttpStatus.CREATED).body(savedPurchaseOrderOpt.get()); // Return 201 Created
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Return 400 Bad Request if the order could not be saved
@@ -85,4 +84,13 @@ public class PO_Controller {
         }
     }
 
+    @GetMapping("/get-purchase-order-by-po-no")
+    public List<PO> getPurchaseOrderListByQCNo(@RequestParam String poNo) {
+        try {
+            return purchaseOrderService.getPurchaseOrderListByPONo(poNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

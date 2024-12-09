@@ -17,4 +17,6 @@ public interface ProjectRepo extends JpaRepository<Project, Integer> {
     @Query("SELECT COUNT(p) FROM Project p")
     Integer getProjectCount();
 
+    @Query("SELECT p.wing, COUNT(p.id) FROM Project p GROUP BY p.wing")
+    List<Object[]> countProjectsByWing();
 }

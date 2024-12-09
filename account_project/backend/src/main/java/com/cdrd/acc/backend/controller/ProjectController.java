@@ -94,4 +94,19 @@ public class ProjectController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("api/project/get-count-wing-wise")
+    public ResponseEntity<List<Object[]>> getProjectCountGroupByWing() {
+        try {
+            List<Object[]> projectCount = projectService.getProjectCountGroupByWing();
+            if (projectCount == null) {
+                return ResponseEntity.ok(null);
+            } else {
+                return ResponseEntity.ok(projectCount);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

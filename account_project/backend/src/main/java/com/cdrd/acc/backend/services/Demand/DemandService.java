@@ -7,11 +7,13 @@ import com.cdrd.acc.backend.entity.Demand.ProjectDemand;
 import com.cdrd.acc.backend.repositories.Demand.DemandRepo;
 import com.cdrd.acc.backend.repositories.Demand.OtherDemandRepo;
 import com.cdrd.acc.backend.repositories.Demand.ProjectDemandRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,9 @@ public class DemandService {
 
     @Autowired
     private DemandRepo demandRepo;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     //Get All Demand List
     public List<Demand> findAll() {
@@ -219,6 +224,54 @@ public class DemandService {
         try {
             return demandRepo.getQuotationCalledDemandCount();
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Object[]> getProjectDemandCountByWingWise() {
+        try {
+            return demandRepo.getProjectDemandCountByWing();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Object[]> getOtherDemandCountByWingWise() {
+        try {
+            return demandRepo.getOtherDemandCountByVote();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getOtherDemandDetailsAsJson() {
+        try {
+            List<Map<String, Object>> result = demandRepo.findOtherDemandDetailsAsMap();
+            return objectMapper.writeValueAsString(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getProjectDemandDetailsAsJson() {
+        try {
+            List<Map<String, Object>> result = demandRepo.findProjectDemandDetailsAsMap();
+            return objectMapper.writeValueAsString(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String updateDemandStatusByQCNo(String qcNo) {
+        try {
+            demandRepo.updateDemandStatusByQCNo(qcNo);
+            return "success";
+         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
