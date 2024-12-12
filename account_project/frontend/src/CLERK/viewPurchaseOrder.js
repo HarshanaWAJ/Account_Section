@@ -13,7 +13,8 @@ const ViewPurchaseOrder = () => {
     const fetchPurchaseOrders = async () => {
       try {
         const response = await axiosInstance.get('/api/purchase-order/get/all-list');
-        setPurchaseOrders(response.data); // Set the fetched data to state
+        setPurchaseOrders(response.data);
+        console.log(response.data); // Set the fetched data to state
       } catch (err) {
         setError(err.response?.data?.message || err.message || 'Error fetching Purchase Orders');
       } finally {

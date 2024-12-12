@@ -13,7 +13,9 @@ const ViewQuotationCall = () => {
     const fetchQuotations = async () => {
       try {
         const response = await axiosInstance.get('/api/quotations/get-all-quotations');
-        setQuotations(response.data); // Set fetched data
+        setQuotations(response.data); 
+        console.log(response.data);
+        
       } catch (err) {
         setError(err.response?.data?.message || err.message || 'Error fetching quotations');
       } finally {
@@ -45,7 +47,7 @@ const ViewQuotationCall = () => {
               {quotations.map((quotation) => (
                 <tr key={quotation.qcNo}>
                   <td className="text-center">{quotation.qcNo}</td>
-                  <td className="text-center">{quotation.demandNo}</td>
+                  <td className="text-center">{quotation.demand.demandNo}</td>
                   <td className="text-center">{quotation.qcDate}</td>
                   <td className="text-center">{quotation.openingDate}</td>
                 </tr>
