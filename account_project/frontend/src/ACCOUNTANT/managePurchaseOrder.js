@@ -79,7 +79,9 @@ const ManagePurchaseOrder = () => {
                     <td className="text-center">{order.qcNo}</td>
                     <td className="text-center">{order.poDate}</td>
                     <td className="text-center">{order.poValue}</td>
-                    <td className="text-center">{order.suppliers.join(', ')}</td>
+                    <td className="text-center">
+                      {(order.suppliers && Array.isArray(order.suppliers) ? order.suppliers : []).join(', ')}
+                    </td>
                     <td className="text-center">
                       <Button variant="warning" size="sm" onClick={() => handleUpdate(order.qcNo)}>
                         Update

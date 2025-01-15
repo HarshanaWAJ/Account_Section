@@ -46,13 +46,16 @@ public class QuotationCallService {
 
             // Save the QuotationCall
             QuotationCall savedQuotation = quotationCallRepo.save(quotationCall);
+
+            // Update Demand status
             demandRepo.updateStatusById("quotation called", quotationCall.getDemand().getId());
             return savedQuotation;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Error occurred while adding QuotationCall: " + e.getMessage()); // Add more specific exception handling as needed
         }
     }
+
 
     @Transactional
     public QuotationCall updateQuotationCall(QuotationCall quotationCall) {

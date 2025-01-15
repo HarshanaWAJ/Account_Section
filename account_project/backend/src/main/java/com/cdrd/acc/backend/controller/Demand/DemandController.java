@@ -131,9 +131,9 @@ public class DemandController {
     }
 
     @GetMapping("/project-on-progress")
-    public ResponseEntity<List<Demand>> getProjectDemandsOnProgress() {
+    public ResponseEntity<List<Object[]>> getProjectDemandsOnProgress() {
         try {
-            List<Demand> demands = demandService.getAllProjectDemandsOnProgress();
+            List<Object[]> demands = demandService.getAllProjectDemandsOnProgress();
             return ResponseEntity.ok(demands);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

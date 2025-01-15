@@ -108,7 +108,6 @@ const QuotationForm = () => {
             setError('Error fetching project name. Please try again.');
         }
     };
-    
 
     const checkQCNumber = async (qcNo) => {
         try {
@@ -153,7 +152,12 @@ const QuotationForm = () => {
         };
 
         try {
-            const response = await axiosInstance.post('/api/quotations/add-quotation-call', quotationCallData);
+            const response = await axiosInstance.post('/api/quotations/add-quotation-call', quotationCallData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
             console.log('Quotation Call Created:', response.data);
             Swal.fire({
                 icon: 'success',
@@ -187,179 +191,179 @@ const QuotationForm = () => {
 
     return (
         <div className="d-flex">
-        <Sidebar />
-        <div className="container mt-4">
-            <div className="card shadow" style={{ maxWidth: '600px', margin: 'auto' }}>
-                <div className="card-header bg-primary text-white">
-                    <h3 className="mb-0">Quotation Calling Form</h3>
-                </div>
-                <div className="card-body">
-                    {error && (
-                        <div className={`alert ${error.includes('Found') ? 'alert-success' : 'alert-danger'}`}>
-                            {error}
-                        </div>
-                    )}
-                    <form onSubmit={handleSubmit}>
-                        <fieldset className="mb-4">
-                            <legend className="col-form-label mb-3">Select Quotation Call Type</legend>
-                            <div className="form-check mb-2">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    id="projectDemand"
-                                    name="type"
-                                    value="projectDemand"
-                                    checked={formData.type === 'projectDemand'}
-                                    onChange={handleChange}
-                                />
-                                <label className="form-check-label mb-2" htmlFor="projectDemand">
-                                    Quotation Call for Project Demands
-                                </label>
+            <Sidebar />
+            <div className="container mt-4">
+                <div className="card shadow" style={{ maxWidth: '600px', margin: 'auto' }}>
+                    <div className="card-header bg-primary text-white">
+                        <h3 className="mb-0">Quotation Calling Form</h3>
+                    </div>
+                    <div className="card-body">
+                        {error && (
+                            <div className={`alert ${error.includes('Found') ? 'alert-success' : 'alert-danger'}`}>
+                                {error}
                             </div>
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    id="other"
-                                    name="type"
-                                    value="other"
-                                    checked={formData.type === 'other'}
-                                    onChange={handleChange}
-                                />
-                                <label className="form-check-label mb-2" htmlFor="other">
-                                    Quotation Call for Other Demands
-                                </label>
-                            </div>
-                        </fieldset>
-
-                        <div className="mb-3">
-                            <label htmlFor="demandNo" className="form-label">Demand No.</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="demandNo"
-                                name="demandNo"
-                                value={formData.demandNo}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="qcNo" className="form-label">QC No.</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="qcNo"
-                                name="qcNo"
-                                value={formData.qcNo}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="qcDate" className="form-label">QC Date</label>
-                            <input
-                                type="date"
-                                className="form-control"
-                                id="qcDate"
-                                name="qcDate"
-                                value={formData.qcDate}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="openingDate" className="form-label">Opening Date</label>
-                            <input
-                                type="date"
-                                className="form-control"
-                                id="openingDate"
-                                name="openingDate"
-                                value={formData.openingDate}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="vote" className="form-label">Vote</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="vote"
-                                name="vote"
-                                value={formData.vote}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-
-                        {formData.type === 'projectDemand' && (
-                            <>
-                                <div className="mb-3">
-                                    <label htmlFor="projectNo" className="form-label">Project No.</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="projectNo"
-                                        name="projectNo"
-                                        value={formData.projectNo}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="projectName" className="form-label">Project Name</label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="projectName"
-                                        name="projectName"
-                                        value={formData.projectName}
-                                        onChange={handleChange}
-                                        required
-                                        readOnly
-                                    />
-                                </div>
-                            </>
                         )}
-                        
-                        <div className="mb-3">
-                            <label htmlFor="itemDescription" className="form-label">Item Description</label>
-                            {items.length > 0 ? (
-                                <table className="table table-striped table-bordered">
-                                    <thead className="table-light">
-                                        <tr>
-                                            <th>Description</th>
-                                            <th>Quantity</th>
-                                            <th>Estimated Value Per Unit</th>
-                                            <th>Total Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {items.map(item => (
-                                            <tr key={item.id}>
-                                                <td>{item.description}</td>
-                                                <td>{item.quantity}</td>
-                                                <td>{item.estimatedValuePerUnit.toFixed(2)}</td>
-                                                <td>{item.totalCost.toFixed(2)}</td>
-                                            </tr>
-                                        ))}
-                                        <tr className="table-success">
-                                            <th colSpan={3} className="text-end">Total Estimated Cost:</th>
-                                            <th>{items.reduce((total, item) => total + item.totalCost, 0).toFixed(2)}</th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <p>No items found for this demand.</p>
-                            )}
-                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <fieldset className="mb-4">
+                                <legend className="col-form-label mb-3">Select Quotation Call Type</legend>
+                                <div className="form-check mb-2">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="projectDemand"
+                                        name="type"
+                                        value="projectDemand"
+                                        checked={formData.type === 'projectDemand'}
+                                        onChange={handleChange}
+                                    />
+                                    <label className="form-check-label mb-2" htmlFor="projectDemand">
+                                        Quotation Call for Project Demands
+                                    </label>
+                                </div>
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="other"
+                                        name="type"
+                                        value="other"
+                                        checked={formData.type === 'other'}
+                                        onChange={handleChange}
+                                    />
+                                    <label className="form-check-label mb-2" htmlFor="other">
+                                        Quotation Call for Other Demands
+                                    </label>
+                                </div>
+                            </fieldset>
 
-                        <button type="submit" className="btn btn-success w-100">Submit</button>
-                    </form>
+                            <div className="mb-3">
+                                <label htmlFor="demandNo" className="form-label">Demand No.</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="demandNo"
+                                    name="demandNo"
+                                    value={formData.demandNo}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="qcNo" className="form-label">QC No.</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="qcNo"
+                                    name="qcNo"
+                                    value={formData.qcNo}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="qcDate" className="form-label">QC Date</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    id="qcDate"
+                                    name="qcDate"
+                                    value={formData.qcDate}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="openingDate" className="form-label">Opening Date</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    id="openingDate"
+                                    name="openingDate"
+                                    value={formData.openingDate}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="vote" className="form-label">Vote</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="vote"
+                                    name="vote"
+                                    value={formData.vote}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+
+                            {formData.type === 'projectDemand' && (
+                                <>
+                                    <div className="mb-3">
+                                        <label htmlFor="projectNo" className="form-label">Project No.</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="projectNo"
+                                            name="projectNo"
+                                            value={formData.projectNo}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="projectName" className="form-label">Project Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="projectName"
+                                            name="projectName"
+                                            value={formData.projectName}
+                                            onChange={handleChange}
+                                            required
+                                            readOnly
+                                        />
+                                    </div>
+                                </>
+                            )}
+                            
+                            <div className="mb-3">
+                                <label htmlFor="itemDescription" className="form-label">Item Description</label>
+                                {items.length > 0 ? (
+                                    <table className="table table-striped table-bordered">
+                                        <thead className="table-light">
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Estimated Value Per Unit</th>
+                                                <th>Total Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {items.map(item => (
+                                                <tr key={item.id}>
+                                                    <td>{item.description}</td>
+                                                    <td>{item.quantity}</td>
+                                                    <td>{item.estimatedValuePerUnit.toFixed(2)}</td>
+                                                    <td>{item.totalCost.toFixed(2)}</td>
+                                                </tr>
+                                            ))}
+                                            <tr className="table-success">
+                                                <th colSpan={3} className="text-end">Total Estimated Cost:</th>
+                                                <th>{items.reduce((total, item) => total + item.totalCost, 0).toFixed(2)}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <p>No items found for this demand.</p>
+                                )}
+                            </div>
+
+                            <button type="submit" className="btn btn-success w-100">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>                         
     );
 };

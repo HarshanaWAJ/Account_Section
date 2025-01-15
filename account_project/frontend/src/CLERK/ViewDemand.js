@@ -12,20 +12,22 @@ const ViewDemands = () => {
   const [errorOtherDemands, setErrorOtherDemands] = useState(null);
 
   // Fetch Project Demands
-  useEffect(() => {
-    const fetchProjectDemands = async () => {
-      try {
-        const response = await axiosInstance.get('/api/demands/get-project-demand');
-        setProjectDemands(response.data);
-      } catch (err) {
-        setErrorProjectDemands(err.response?.data?.message || err.message || 'Error fetching project demands');
-      } finally {
-        setLoadingProjectDemands(false);
-      }
-    };
+ // Fetch Project Demands
+useEffect(() => {
+  const fetchProjectDemands = async () => {
+    try {
+      const response = await axiosInstance.get('/api/demands/get-project-demand');
+      console.log(response.data);
+      setProjectDemands(Array.isArray(response.data) ? response.data : []);  // Handle if response is not an array
+    } catch (err) {
+      setErrorProjectDemands(err.response?.data?.message || err.message || 'Error fetching project demands');
+    } finally {
+      setLoadingProjectDemands(false);
+    }
+  };
 
-    fetchProjectDemands();
-  }, []);
+  fetchProjectDemands();
+}, []);
 
   // Fetch Other Demands
   useEffect(() => {

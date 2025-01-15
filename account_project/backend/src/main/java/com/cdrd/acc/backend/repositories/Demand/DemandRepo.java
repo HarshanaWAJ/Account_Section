@@ -36,8 +36,20 @@ public interface DemandRepo extends JpaRepository<Demand, Integer> {
     //
     // Update status as Quotation Called
     //
-    @Query("SELECT d FROM Demand d WHERE d.status = 'on progress' AND TYPE(d) = ProjectDemand")
-    List<Demand> findAllProjectDemandStatusOnProgress();
+    @Query(value = "SELECT d.id, " +
+            "d.allocation_per_year, " +
+            "d.date, " +
+            "d.demand_no, " +
+            "d.estimated_value, " +
+            "d.ref_no, " +
+            "d.status, " +
+            "pd.project_no, " +
+            "pd.vote, " +
+            "pd.wing " +
+            "FROM demand d " +
+            "INNER JOIN project_demand pd ON d.id = pd.id " +
+            "WHERE d.status = 'on progress'", nativeQuery = true)
+    List<Object[]> findAllProjectDemandStatusOnProgress();
 
     @Query("SELECT d FROM Demand d WHERE d.status = 'on progress' AND TYPE(d) = OtherDemand")
     List<Demand> findAllOtherDemandStatusOnProgress();
@@ -98,7 +110,27 @@ public interface DemandRepo extends JpaRepository<Demand, Integer> {
     List<Map<String, Object>> findOtherDemandDetailsAsMap();
 
 
-    @Query(value = "SELECT pd.*, p.*, qc.*, po.*, lp.*, prpc.*, prmpc.*, pdg.* " +
+    @Query(value = "SELECT pd.*, p.*, qc.*, po.*, lp.*, prpc.*, prmpc.*, pdg.*, " +
+            "COALESCE(" +
+            "(SELECT value FROM procurement_by_dg pdg WHERE pdg.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT value FROM procurement_by_rpc prpc WHERE prpc.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT value FROM procurement prmpc WHERE prmpc.quotation_call_id = qc.id LIMIT 1) " +
+            ") AS procurement_amount, " +
+            "COALESCE(" +
+            "(SELECT no_of_quotation_received FROM procurement_by_dg pdg WHERE pdg.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT no_of_quotation_received FROM procurement_by_rpc prpc WHERE prpc.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT no_of_quotation_received FROM procurement prmpc WHERE prmpc.quotation_call_id = qc.id LIMIT 1) " +
+            ") AS no_of_quotation_received, " +
+            "COALESCE(" +
+            "(SELECT approval_letter_date FROM procurement_by_dg pdg WHERE pdg.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT approved_date FROM procurement_by_rpc prpc WHERE prpc.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT approved_date FROM procurement prmpc WHERE prmpc.quotation_call_id = qc.id LIMIT 1) " +
+            ") AS approved_date, " +
+            "COALESCE(" +
+            "(SELECT remark FROM procurement_by_dg pdg WHERE pdg.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT remark FROM procurement_by_rpc prpc WHERE prpc.quotation_call_id = qc.id LIMIT 1), " +
+            "(SELECT remark FROM procurement prmpc WHERE prmpc.quotation_call_id = qc.id LIMIT 1) " +
+            ") AS remark " +
             "FROM project_demand pd " +
             "JOIN projects p ON p.id = pd.id " +
             "JOIN quotation_call qc ON qc.demand_id = pd.id " +
@@ -108,5 +140,6 @@ public interface DemandRepo extends JpaRepository<Demand, Integer> {
             "LEFT JOIN procurement prmpc ON prmpc.quotation_call_id = qc.id " +
             "LEFT JOIN procurement_by_dg pdg ON pdg.quotation_call_id = qc.id ", nativeQuery = true)
     List<Map<String, Object>> findProjectDemandDetailsAsMap();
+
 
 }

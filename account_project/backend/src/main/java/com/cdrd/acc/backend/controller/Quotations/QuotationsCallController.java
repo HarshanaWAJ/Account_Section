@@ -32,10 +32,10 @@ public class QuotationsCallController {
         }
     }
 
-    // Add Quotation Call
     @PostMapping("/add-quotation-call")
     public ResponseEntity<QuotationCall> addQuotationCall(@RequestBody QuotationCall quotationCall) {
         try {
+            System.out.println("Received QuotationCall: " + quotationCall);
             QuotationCall addedQuotationCall = quotationCallService.addQuotationCall(quotationCall);
             return ResponseEntity.ok(addedQuotationCall);
         } catch (Exception e) {
@@ -43,6 +43,7 @@ public class QuotationsCallController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<QuotationCall> updateQuotationCall(@PathVariable Integer id, @RequestBody QuotationCall quotationCall) {

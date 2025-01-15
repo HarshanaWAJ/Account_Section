@@ -138,7 +138,7 @@ public class DemandService {
     //
     // Get On Progress Demand for Projects
     //
-    public List<Demand> getAllProjectDemandsOnProgress() {
+    public List<Object[]> getAllProjectDemandsOnProgress() {
         try {
             return demandRepo.findAllProjectDemandStatusOnProgress();
         } catch (Exception e) {
